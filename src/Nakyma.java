@@ -9,7 +9,7 @@ public class Nakyma {
 	private Image hahmo = null;
 	
 	public Nakyma() throws SlickException {
-		hahmo = new Image("A.png");
+		hahmo = new Image("data/A.png");
 	}
 	
 	public void paivita(GameContainer gc, Graphics g){
