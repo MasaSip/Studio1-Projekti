@@ -1,9 +1,10 @@
-package Peli;
+package Game;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Point;
@@ -13,11 +14,11 @@ import org.newdawn.slick.geom.Point;
 public class Game extends BasicGame {
 	
 	public static final float WIDTH = 900;
-	public static final float HEIGHT = 700;
+	public static final float HEIGHT = 600;
 	
 	public GameEngine gameEngine;
 	
-	public Game() {
+	public Game() throws SlickException{
 		super("Sokeri Humala");
 		this.gameEngine = new GameEngine();
 	}
@@ -27,7 +28,8 @@ public class Game extends BasicGame {
 	 * grafiikan piirto
 	 */
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-	
+		this.gameEngine.drawGameObjects();
+		
 	}
 
 	@Override
@@ -35,7 +37,8 @@ public class Game extends BasicGame {
 	 * suoritetaan ennen game-loopin kaynnistymista.
 	 */
 	public void init(GameContainer gc) throws SlickException {
-		
+		this.gameEngine.loadImages();
+		this.gameEngine.putAvatarIntoGame();
 	}
 
 	@Override
@@ -60,8 +63,8 @@ public class Game extends BasicGame {
 		throws SlickException
 	{	
 
-		Game peli = new Game();
-		AppGameContainer app = new AppGameContainer(peli);
+		Game game = new Game();
+		AppGameContainer app = new AppGameContainer(game);
 		app.setDisplayMode(
 				(int)Game.WIDTH,
 				(int) Game.HEIGHT, 

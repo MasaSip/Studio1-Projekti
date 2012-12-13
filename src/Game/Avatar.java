@@ -1,4 +1,4 @@
-package Peli;
+package Game;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -6,8 +6,8 @@ import org.newdawn.slick.geom.Point;
 
 public class Avatar extends GameObject {
 
-	public Avatar(Point location) throws SlickException {
-		super(new Image("data/A.png"), location);
+	public Avatar() throws SlickException {
+		super("data/A.png");
 	}
 
 }
