@@ -28,6 +28,7 @@ public class Game extends BasicGame {
 	 * grafiikan piirto
 	 */
 	public void render(GameContainer gc, Graphics g) throws SlickException {
+	
 		this.gameEngine.drawGameObjects();
 		
 	}
@@ -38,6 +39,7 @@ public class Game extends BasicGame {
 	 */
 	public void init(GameContainer gc) throws SlickException {
 		this.gameEngine.loadImages();
+		this.gameEngine.putBottomLayerIntoGame();
 		this.gameEngine.putAvatarIntoGame();
 	}
 
@@ -48,13 +50,15 @@ public class Game extends BasicGame {
 	 */
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
+		
+		this.gameEngine.generateLayers();
 				
 		if (input.isKeyDown(Input.KEY_LEFT)){
-			this.gameEngine.moveAvatar(GameEngine.LEFT, delta);
+			this.gameEngine.moveAvatar(Input.KEY_LEFT, delta);
 		}
 		
 		if (input.isKeyDown(Input.KEY_RIGHT)){
-			this.gameEngine.moveAvatar(GameEngine.RIGHT, delta);
+			this.gameEngine.moveAvatar(Input.KEY_RIGHT, delta);
 		}
 	
 	}
