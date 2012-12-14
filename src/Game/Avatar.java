@@ -10,12 +10,11 @@ public class Avatar extends GameObject {
 	/**
 	 * Mihin suuntaan Avatar liikkuu
 	 */
-	//xxx täätä ei käytetä vielä missään
 	private Vector2f direction;
 	
 	public Avatar() throws SlickException {
 		super("data/A.png");
-		super.setSpeed(1f);
+		super.setSpeed(0.8f);
 		this.direction = new Vector2f();
 	}
 	
@@ -25,13 +24,20 @@ public class Avatar extends GameObject {
 	 * @param delta kuinka paljon millisekuntteja on kulunut edellisestä
 	 * liikumisesta
 	 */
-	public void move(int direction, int delta){
+	public void move(Input input, int delta){
 		float amount = super.getSpeed()*delta;
-		if (direction == Input.KEY_LEFT){
+		boolean move = false;
+		if (input.isKeyDown(Input.KEY_LEFT)){
 			amount = -amount;
+			move = true;
 		}
 		
-		super.move(new Point(amount, 0f));
+		if (input.isKeyDown(Input.KEY_RIGHT)){
+			move = true;
+		}
+		if (move){			
+			super.move(new Point(amount, 0f));
+		}
 		
 	}
 	

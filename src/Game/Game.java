@@ -53,13 +53,8 @@ public class Game extends BasicGame {
 		
 		this.gameEngine.generateLayers();
 				
-		if (input.isKeyDown(Input.KEY_LEFT)){
-			this.gameEngine.moveAvatar(Input.KEY_LEFT, delta);
-		}
+		this.gameEngine.moveAvatar(input, delta);
 		
-		if (input.isKeyDown(Input.KEY_RIGHT)){
-			this.gameEngine.moveAvatar(Input.KEY_RIGHT, delta);
-		}
 	
 	}
 	

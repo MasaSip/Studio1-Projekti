@@ -19,7 +19,9 @@ public class GameEngine {
 	
 	/**
 	 * Tietaa mika osa pelista tulee nayttaa ruudulle. Polygonin sijainti
-	 * absoluuttisen koordinaatiston arvoja. 
+	 * absoluuttisen koordinaatiston arvoja. Pelin edetessa viewWindow liikkuu
+	 * ylemmas eli sen y-koordinaatit pienenevat. Koska viewWindow liikkuu 
+	 * ylospain, nayttaa kuin kaikki valuisi itsestaan alaspain.
 	 */
 	private Polygon viewWindow;
 	private Avatar avatar;
@@ -62,8 +64,8 @@ public class GameEngine {
 	 * @param delta kuinka paljon millisekuntteja on kulunut edellisestä
 	 * liikumisesta
 	 */
-	public void moveAvatar(int direction, int delta){
-		this.avatar.move(direction, delta);
+	public void moveAvatar(Input input, int delta){
+		this.avatar.move(input, delta);
 		
 		
 	}
