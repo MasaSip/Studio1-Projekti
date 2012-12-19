@@ -25,6 +25,7 @@ public class GameEngine {
 	 */
 	private Polygon viewWindow;
 	private Avatar avatar;
+	private GameObject bottomLayer;
 	private List <GameObject> layers;
 	private float lastLayer;
 	
@@ -38,8 +39,8 @@ public class GameEngine {
 	public GameEngine() throws SlickException {
 		this.layers = new ArrayList();
 		GameObject bottomLayer = new GameObject("data/BottomLayer.png");
+		this.bottomLayer = bottomLayer;
 		this.layers.add(bottomLayer);
-		
 		
 		float[] figure = 
 			{0f,0f, Game.WIDTH,0f, Game.WIDTH,Game.HEIGHT, 0f,Game.HEIGHT};
@@ -48,15 +49,20 @@ public class GameEngine {
 	}
 	
 	public void putBottomLayerIntoGame(){
-		for (GameObject o : this.layers){
-			o.setLocation(Location.BOTTOM_CENTER);
-			
-		}
+		this.bottomLayer.setLocationOnBottom();
+		this.avatar.move(new Point(0,-this.bottomLayer.getHeight()));
+		
 		
 	}
 	
 	public void putAvatarIntoGame() throws SlickException{
-		this.avatar.setLocation(Location.BOTTOM_CENTER);
+		
+	
+		float Xabs = (Game.WIDTH - avatar.getWidth())/2;
+		float Yabs = Game.HEIGHT - avatar.getHeight();
+		//Yabs +=
+	
+		avatar.setLocation(new Point(Xabs, Yabs));
 	}
 	
 	/**
@@ -79,6 +85,7 @@ public class GameEngine {
 	
 	public void loadImages() throws SlickException{
 		this.avatar.loadImage();
+		this.bottomLayer.loadImage();
 		for (GameObject o : this.layers){
 			o.loadImage();
 		}
