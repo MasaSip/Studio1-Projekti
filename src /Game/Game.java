@@ -39,8 +39,9 @@ public class Game extends BasicGame {
 	 */
 	public void init(GameContainer gc) throws SlickException {
 		this.gameEngine.loadImages();
-		this.gameEngine.putBottomLayerIntoGame();
 		this.gameEngine.putAvatarIntoGame();
+		this.gameEngine.putBottomLayerIntoGame();
+	
 	}
 
 	@Override

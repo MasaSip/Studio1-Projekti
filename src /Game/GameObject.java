@@ -66,18 +66,11 @@ public class GameObject {
 	 * 
 	 * @param location mihin halutaan sijoittaa
 	 */
-	public void setLocation(Location location){
-		float Xabs = 0;
-		float Yabs = 0;
-		if (location == null){
-			this.locationAbs = null;
-			return;
-		}
-		if (location.equals(Location.BOTTOM_CENTER)){
-			Xabs = (Game.WIDTH - this.getWidth())/2;
-			Yabs = Game.HEIGHT - this.getHeight();
+	public void setLocationOnBottom(){
+			
+		float Xabs = (Game.WIDTH - this.getWidth())/2;
+		float Yabs = Game.HEIGHT - this.getHeight();
 		
-		}
 		this.locationAbs = new Point(Xabs, Yabs);
 	}
 	
@@ -101,6 +94,11 @@ public class GameObject {
 		this.image = new Image(this.imageLocation);
 	}
 	
+	/**
+	 * 
+	 * @param vector Point jonka x ja y koordinaatit lisataan olion 
+	 * alkuperaisiin x ja y koordinaatteihin
+	 */
 	public void move(Point vector){
 		float currentX = this.locationAbs.getX();
 		float currentY = this.locationAbs.getY();
