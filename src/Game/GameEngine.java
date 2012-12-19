@@ -28,6 +28,7 @@ public class GameEngine {
 	private GameObject bottomLayer;
 	private List <GameObject> layers;
 	private float lastLayer;
+	private Physics physics;
 	
 	/**
 	 * kuinka korkealla nakyma on lahtotasosta
@@ -46,6 +47,7 @@ public class GameEngine {
 			{0f,0f, Game.WIDTH,0f, Game.WIDTH,Game.HEIGHT, 0f,Game.HEIGHT};
 		this.viewWindow = new Polygon(figure);
 		this.avatar = new Avatar();
+		physics = new Physics(this.avatar);
 	}
 	
 	public void putBottomLayerIntoGame(){
@@ -62,7 +64,9 @@ public class GameEngine {
 		float Yabs = Game.HEIGHT - avatar.getHeight();
 		//Yabs +=
 	
-		avatar.setLocation(new Point(Xabs, Yabs));
+		this.avatar.setLocation(new Point(Xabs, Yabs));
+		this.avatar.setOnGround(true);
+		
 	}
 	
 	/**
@@ -71,7 +75,30 @@ public class GameEngine {
 	 * liikumisesta
 	 */
 	public void moveAvatar(Input input, int delta){
-		this.avatar.move(input, delta);
+		
+		//xxx kannattaa muuttaa physicsia käyttäväksi
+		float amount = this.avatar.getSpeed()*delta;
+		boolean move = false;
+		if (input.isKeyDown(Input.KEY_LEFT)){
+			amount = -amount;
+			move = true;
+		}
+		
+		if (input.isKeyDown(Input.KEY_RIGHT)){
+			move = true;
+		}
+		if (move){			
+			this.avatar.move(new Point(amount, 0f));
+		}
+		
+		//tähän asti
+		
+		if (input.isKeyPressed(Input.KEY_SPACE) && this.avatar.isOnGround()){
+			
+			this.physics.jump();
+		}
+		
+		this.physics.moveAvatar();
 		
 		
 	}
@@ -121,6 +148,10 @@ public class GameEngine {
 			
 			this.generateLayers();
 		}
+	}
+	
+	public void updatePhysics(int delta){
+		this.physics.update(this.layers, delta);
 	}
 	
 

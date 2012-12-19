@@ -50,6 +50,7 @@ public class Game extends BasicGame {
 	 * @param delta kauanko on aikaa edellisesta paivityksesta
 	 */
 	public void update(GameContainer gc, int delta) throws SlickException {
+		this.gameEngine.updatePhysics(delta);
 		Input input = gc.getInput();
 		
 		this.gameEngine.generateLayers();
