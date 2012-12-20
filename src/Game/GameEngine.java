@@ -1,13 +1,12 @@
 package Game;
 
-import java.util.List;
 import java.util.ArrayList;
-
+import java.util.List;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Vector2f;
 /**
  * Absoluuttisen koordinaatiston origo on vasen ylakulma aloitusnaytolta.
  * Absoluuttinen koordinaatisto kasvaa alasoikealle
@@ -52,7 +51,7 @@ public class GameEngine {
 	
 	public void putBottomLayerIntoGame(){
 		this.bottomLayer.setLocationOnBottom();
-		this.avatar.move(new Point(0,-this.bottomLayer.getHeight()));
+		this.avatar.move(new Vector2f(0,-this.bottomLayer.getHeight()));
 		
 		
 	}
@@ -64,7 +63,7 @@ public class GameEngine {
 		float Yabs = Game.HEIGHT - avatar.getHeight();
 		//Yabs +=
 	
-		this.avatar.setLocation(new Point(Xabs, Yabs));
+		this.avatar.setLocation(new Vector2f(Xabs, Yabs));
 		this.avatar.setOnGround(true);
 		
 	}
@@ -88,7 +87,7 @@ public class GameEngine {
 			move = true;
 		}
 		if (move){			
-			this.avatar.move(new Point(amount, 0f));
+			this.avatar.move(new Vector2f(amount, 0f));
 		}
 		
 		//tähän asti
@@ -142,7 +141,7 @@ public class GameEngine {
 					- this.distanceBetweenLayers
 					- newLayer.getHeight();
 			
-			Point locationAbs = new Point(Xabs, Yabs);
+			Vector2f locationAbs = new Vector2f(Xabs, Yabs);
 			newLayer.setLocation(locationAbs);
 			this.layers.add(newLayer);
 			

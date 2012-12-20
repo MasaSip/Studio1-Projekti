@@ -3,7 +3,6 @@ package Game;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -43,7 +42,7 @@ public class Physics {
 	public void jump(){
 		
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
-		deltaV.y -= 500f;
+		deltaV.y -= 1000f;
 		this.velocity.add(deltaV);
 	}
 	
@@ -64,13 +63,16 @@ public class Physics {
 		float deltaY = this.velocity.y*this.delta/1000 ; //koska delta yksikkoa ms
 		System.out.println(deltaY);
 		Vector2f triedAction = new Vector2f(deltaX, deltaY);
+		
+		//Vector2f triedLocationAbs = new Vector2f(triedX,triedY):
 		//TODO
 		/*
 		 * COLLISION CHECK ei toimi kunnol
 		 */
-		//Vector2f leagalAction = this.collisionCheck(triedAction);
+		//Vector2f leagalAction = 
+		//this.collisionCheck(triedAction);
 		
-		this.avatar.move(new Point(triedAction.x, triedAction.y));
+		this.avatar.move(new Vector2f(triedAction.x, triedAction.y));
 		
 	}	
 	
@@ -78,7 +80,7 @@ public class Physics {
 	 * tarkistaa onko uusi koordinaatti laillinen. Voidaanko avatar siirtaa?
 	 * 
 	 */
-	public Vector2f collisionCheck(Vector2f location){
+	public void collisionCheck(Vector2f location){
 		//reagoi tormaykseen vasta kun kappaleet sisakkain
 		boolean collisionX = false;
 		boolean collisionY = false;
@@ -115,7 +117,7 @@ public class Physics {
 			//lahtemaan vastakkaiseen suuntaan
 		}
 		
-		return new Vector2f(x,y);
+		//return new Vector2f(x,y);
 
 	}
 
