@@ -1,13 +1,12 @@
 package Game;
 
-import java.util.List;
 import java.util.ArrayList;
-
+import java.util.List;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Vector2f;
 /**
  * Absoluuttisen koordinaatiston origo on vasen ylakulma aloitusnaytolta.
  * Absoluuttinen koordinaatisto kasvaa alasoikealle
@@ -28,6 +27,7 @@ public class GameEngine {
 	private GameObject bottomLayer;
 	private List <GameObject> layers;
 	private float lastLayer;
+	private Physics physics;
 	
 	/**
 	 * kuinka korkealla nakyma on lahtotasosta
@@ -46,11 +46,12 @@ public class GameEngine {
 			{0f,0f, Game.WIDTH,0f, Game.WIDTH,Game.HEIGHT, 0f,Game.HEIGHT};
 		this.viewWindow = new Polygon(figure);
 		this.avatar = new Avatar();
+		physics = new Physics(this.avatar);
 	}
 	
 	public void putBottomLayerIntoGame(){
 		this.bottomLayer.setLocationOnBottom();
-		this.avatar.move(new Point(0,-this.bottomLayer.getHeight()));
+		this.avatar.move(new Vector2f(0,-this.bottomLayer.getHeight()));
 		
 		
 	}
@@ -62,7 +63,9 @@ public class GameEngine {
 		float Yabs = Game.HEIGHT - avatar.getHeight();
 		//Yabs +=
 	
-		avatar.setLocation(new Point(Xabs, Yabs));
+		this.avatar.setLocation(new Vector2f(Xabs, Yabs));
+		this.avatar.setOnGround(true);
+		
 	}
 	
 	/**
@@ -71,7 +74,30 @@ public class GameEngine {
 	 * liikumisesta
 	 */
 	public void moveAvatar(Input input, int delta){
-		this.avatar.move(input, delta);
+		
+		//xxx kannattaa muuttaa physicsia käyttäväksi
+		float amount = this.avatar.getSpeed()*delta;
+		boolean move = false;
+		if (input.isKeyDown(Input.KEY_LEFT)){
+			amount = -amount;
+			move = true;
+		}
+		
+		if (input.isKeyDown(Input.KEY_RIGHT)){
+			move = true;
+		}
+		if (move){			
+			this.avatar.move(new Vector2f(amount, 0f));
+		}
+		
+		//tähän asti
+		
+		if (input.isKeyPressed(Input.KEY_SPACE) && this.avatar.isOnGround()){
+			
+			this.physics.jump();
+		}
+		
+		this.physics.moveAvatar();
 		
 		
 	}
@@ -115,12 +141,16 @@ public class GameEngine {
 					- this.distanceBetweenLayers
 					- newLayer.getHeight();
 			
-			Point locationAbs = new Point(Xabs, Yabs);
+			Vector2f locationAbs = new Vector2f(Xabs, Yabs);
 			newLayer.setLocation(locationAbs);
 			this.layers.add(newLayer);
 			
 			this.generateLayers();
 		}
+	}
+	
+	public void updatePhysics(int delta){
+		this.physics.update(this.layers, delta);
 	}
 	
 

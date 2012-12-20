@@ -6,16 +6,14 @@ package Game;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-
-
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Vector2f;
 
 public class GameObject {
 			
 	private Image image;
 	private String imageLocation;
-	private Point locationAbs;
+	private Vector2f locationAbs;
 	private float speed;
 	
 	/**
@@ -36,7 +34,7 @@ public class GameObject {
 
 	
 	public void draw(Polygon viewWindow) {
-		Point locationOnScreen = this.getLocationOnScreen(viewWindow);
+		Vector2f locationOnScreen = this.getLocationOnScreen(viewWindow);
 		float XonScreen = locationOnScreen.getX();
 		float YonScreen = locationOnScreen.getY();
 		
@@ -45,13 +43,13 @@ public class GameObject {
 		
 	}
 	
-	public Point getLocationAbs(){
+	public Vector2f getLocationAbs(){
 		
 		return this.locationAbs;
 	}
 	
 	public float getMinYabs(){
-		return this.getLocationAbs().getMinY();
+		return this.getLocationAbs().getY();
 	}
 	
 	public float getHeight(){
@@ -71,15 +69,15 @@ public class GameObject {
 		float Xabs = (Game.WIDTH - this.getWidth())/2;
 		float Yabs = Game.HEIGHT - this.getHeight();
 		
-		this.locationAbs = new Point(Xabs, Yabs);
+		this.locationAbs = new Vector2f(Xabs, Yabs);
 	}
 	
 	
-	public void setLocation(Point locationAbs){
+	public void setLocation(Vector2f locationAbs){
 		this.locationAbs = locationAbs;
 	}
 	
-	public Point getLocationOnScreen(Polygon viewWindow){
+	public Vector2f getLocationOnScreen(Polygon viewWindow){
 		float X = this.getLocationAbs().getX();
 		float Y = this.getLocationAbs().getY();
 		
@@ -87,7 +85,7 @@ public class GameObject {
 		
 		float YonScreen = Y + heightFromGround;
 		
-		return new Point(X, YonScreen);
+		return new Vector2f(X, YonScreen);
 	}
 	
 	public void loadImage() throws SlickException{
@@ -96,16 +94,17 @@ public class GameObject {
 	
 	/**
 	 * 
-	 * @param vector Point jonka x ja y koordinaatit lisataan olion 
+	 * @param vector Vector2f jonka x ja y koordinaatit lisataan olion 
 	 * alkuperaisiin x ja y koordinaatteihin
 	 */
-	public void move(Point vector){
+	public void move(Vector2f vector){
 		float currentX = this.locationAbs.getX();
 		float currentY = this.locationAbs.getY();
 		float newX = currentX + vector.getX();
 		float newY = currentY + vector.getY();
 		
-		this.locationAbs.setLocation(newX, newY);
+		this.locationAbs.set(newX, newY);
+		
 	}
 
 }
