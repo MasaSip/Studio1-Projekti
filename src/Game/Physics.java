@@ -47,7 +47,7 @@ public class Physics {
 	}
 	
 	public void moveAvatar(){
-		
+		this.acceleration.y = Physics.gravity;
 		
 		/*fysiikasta:
 		 * v = a*t
@@ -59,50 +59,54 @@ public class Physics {
 		/*fysiikasta:
 		 * s= v*t
 		 */
-		float deltaX = this.velocity.x*this.delta/1000; // jaetaan 1000:lla
-		float deltaY = this.velocity.y*this.delta/1000 ; //koska delta yksikkoa ms
-		System.out.println(deltaY);
-		Vector2f triedAction = new Vector2f(deltaX, deltaY);
 		
-		//Vector2f triedLocationAbs = new Vector2f(triedX,triedY):
-		//TODO
-		/*
-		 * COLLISION CHECK ei toimi kunnol
-		 */
-		//Vector2f leagalAction = 
-		//this.collisionCheck(triedAction);
+		//sijainnin muutos on nopeus kertaa aika edellisesta paivityksesta
+		//jaetaan 1000: lla koska delta yksikkoa ms
+		float scaleValue = this.delta/1000.0f;
+		Vector2f deltaLocation = new Vector2f(this.velocity).scale(scaleValue);
+		//float deltaX = this.velocity.x*this.delta/1000; // jaetaan 1000:lla
+		//float deltaY = this.velocity.y*this.delta/1000 ; //koska delta yksikkoa ms
+		//Vector2f deltaLocation = new Vector2f(deltaX, deltaY);
+		//avatarin sijaintiin lisataan sijainnin muutos
 		
-		this.avatar.move(new Vector2f(triedAction.x, triedAction.y));
+		
+		Vector2f AvatarsLocation = this.avatar.getLocationAbs();
+		AvatarsLocation.add(deltaLocation);
+		this.collisionCheck(AvatarsLocation);
+		
 		
 	}	
 	
 	/**
 	 * tarkistaa onko uusi koordinaatti laillinen. Voidaanko avatar siirtaa?
+	 * Muuttaa GameObjectin sijainnin lailliseksi jos parametri-sijainti oli 
+	 * laiton
 	 * 
 	 */
 	public void collisionCheck(Vector2f location){
 		//reagoi tormaykseen vasta kun kappaleet sisakkain
+	
 		boolean collisionX = false;
 		boolean collisionY = false;
 		float x = location.x;
 		float y = location.y;
 		
 		if (x < 0) {
-			x = 0;
+			location.x = 0;
 			collisionX = true;
 		}
 		if (y < 0) {
-			y = 0;
+			location.y = 0;
 			collisionY = true;
 		}
 		float maxX = Game.WIDTH - this.avatar.getWidth(); 
 		float maxY = Game.HEIGHT - this.avatar.getHeight();
 		if (x > (maxX)) {
-			x = maxX;
+			location.x = maxX;
 			collisionX = true;
 		}
 		if (y > (maxY)) {
-			y = maxY;
+			location.y = maxY;
 			collisionY = true;
 		}
 
