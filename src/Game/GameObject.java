@@ -48,6 +48,10 @@ public class GameObject {
 		return this.locationAbs;
 	}
 	
+	/**
+	 * 
+	 * @return Kuvakkeen korkein y-koordinaatti
+	 */
 	public float getMinYabs(){
 		return this.getLocationAbs().getY();
 	}
@@ -58,6 +62,22 @@ public class GameObject {
 	
 	public float getWidth(){
 		return (float) this.image.getWidth();
+	}
+	/**
+	 * 
+	 * @return Kuvakkeen vasen ylakulma
+	 */
+	public Vector2f getLeftTop(){
+		return this.locationAbs.copy();
+	}
+	
+	/**
+	 * 
+	 * @return Kuvakkeen oikea ylakulma
+	 */
+	public Vector2f getRightTop(){
+		Vector2f fromRightToLeft = new Vector2f(this.getWidth(),0f);
+		return this.getLeftTop().add(fromRightToLeft);
 	}
 	
 	/**
