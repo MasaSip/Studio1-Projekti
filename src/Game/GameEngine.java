@@ -128,7 +128,7 @@ public class GameEngine {
 		
 		GameObject topLayer = this.layers.get(layersInGame -1);
 		float spaceAboveTopLayer = 
-				topLayer.getMinYabs() - this.viewWindow.getMinY();
+				topLayer.getTopY() - this.viewWindow.getMinY();
 	
 		if (spaceAboveTopLayer > this.distanceBetweenLayers){
 	
@@ -137,7 +137,7 @@ public class GameEngine {
 			
 			//x ja y absoluuttisessa koordinaatistossa
 			float Xabs = this.viewWindow.getCenterX() - newLayer.getWidth()/2;
-			float Yabs = topLayer.getMinYabs() 
+			float Yabs = topLayer.getTopY() 
 					- this.distanceBetweenLayers
 					- newLayer.getHeight();
 			
