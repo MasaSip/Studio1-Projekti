@@ -3,6 +3,7 @@ package Game;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -70,70 +71,35 @@ public class Physics {
 		//avatarin sijaintiin lisataan sijainnin muutos
 		
 		
-		Vector2f AvatarsLocation = this.avatar.getLocationAbs();
-		AvatarsLocation.add(deltaLocation);
-		this.collisionCheck(AvatarsLocation);
+		Vector2f oldLocation = this.avatar.getLocationAbs();
+		Vector2f targetLocation = oldLocation.copy();
+		targetLocation.add(deltaLocation);
+		
+		Vector2f finalLocation = //this.collisionCheck(targetLocation);
+				this.collisionWithLayers(oldLocation, targetLocation);
+		finalLocation = this.collisionCheck(finalLocation);
+		
+		this.avatar.setLocation(finalLocation);
+		
+		//AvatarsLocation.add(deltaLocation);
+		//this.collisionCheck(AvatarsLocation);
 		
 		
 	}	
 	
 	/**
 	 * tarkistaa onko uusi koordinaatti laillinen. Voidaanko avatar siirtaa?
-	 * Muuttaa GameObjectin sijainnin lailliseksi jos parametri-sijainti oli 
-	 * laiton
-	 * 
+	 * Palauttaa sijainnin johon olio paatyi tormayksen takia
+	 * @param to mihin yritetaan menna
 	 */
-	public void collisionCheck(Vector2f location){
+	public Vector2f collisionCheck(Vector2f to){
 		//reagoi tormaykseen vasta kun kappaleet sisakkain
 	
 		boolean collisionX = false;
 		boolean collisionY = false;
-		float x = location.x;
-		float y = location.y;
+		float x = to.x;
+		float y = to.y;
 		
-		if (x < 0) {
-			location.x = 0;
-			collisionX = true;
-		}
-		if (y < 0) {
-			location.y = 0;
-			collisionY = true;
-		}
-		float maxX = Game.WIDTH - this.avatar.getWidth(); 
-		float maxY = Game.HEIGHT - this.avatar.getHeight();
-		if (x > (maxX)) {
-			location.x = maxX;
-			collisionX = true;
-		}
-		if (y > (maxY)) {
-			location.y = maxY;
-			collisionY = true;
-		}
-
-		if (collisionX){
-			this.velocity.x = 0;
-			this.acceleration.x = 0;
-		}
-
-		if (collisionY){
-			this.velocity.y = 0;
-			this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
-			//lahtemaan vastakkaiseen suuntaan
-		}
-		
-		//return new Vector2f(x,y);
-
-	}
-
-
-
-	/*	
-
-
-		//TÖRMÄYSTARKISTUS
-		//reagoi tormaykseen vasta kun kappaleet sisakkain
-		boolean collisionX = false;
-		boolean collisionY = false;
 		if (x < 0) {
 			x = 0;
 			collisionX = true;
@@ -142,8 +108,8 @@ public class Physics {
 			y = 0;
 			collisionY = true;
 		}
-		float maxX = this.screenX - this.plane.getWidth(); 
-		float maxY = this.screenY - this.plane.getHeight();
+		float maxX = Game.WIDTH - this.avatar.getWidth(); 
+		float maxY = Game.HEIGHT - this.avatar.getHeight();
 		if (x > (maxX)) {
 			x = maxX;
 			collisionX = true;
@@ -152,18 +118,60 @@ public class Physics {
 			y = maxY;
 			collisionY = true;
 		}
-		
+
 		if (collisionX){
 			this.velocity.x = 0;
 			this.acceleration.x = 0;
 		}
-		
+
 		if (collisionY){
 			this.velocity.y = 0;
 			this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
 			//lahtemaan vastakkaiseen suuntaan
 		}
-	
+		
+		return new Vector2f(x,y);
+
 	}
-	*/
+	
+	
+	public Vector2f collisionWithLayers(Vector2f from, Vector2f to){
+		float x = to.x;
+		float y = to.y;
+		//ollaan menossa alapain
+		if (to.y > from.y){
+			for (GameObject o : this.layers){
+				//System.out.println(this.layers.size());
+				if (to.y > o.getMinYabs()){
+					
+					
+					Line motionLine = new Line(from, to);
+					
+					Line layerLine = new Line(o.getLeftTop(), o.getRightTop());
+					
+					Vector2f intersectPoint = motionLine.intersect(layerLine);
+					//tästä jatkuu
+					/*
+					 *get point palautta 4 pistettä jotka ympäröivät kuvion
+					float[] layerPoints = layerLine.getPoints();
+					float[] motionPoints = motionLine.getPoints();
+					for (int i=0 ; i < layerPoints.length; i++){
+						for (int j = 0; j < motionPoints.length ; j++)
+						
+						System.out.println(i);
+					}
+					*/
+				}
+				
+			
+			}
+		}
+		
+		
+		return new Vector2f(x,y);
+	}
+
+
+
+	
 }
