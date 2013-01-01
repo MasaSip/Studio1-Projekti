@@ -14,7 +14,7 @@ import org.newdawn.slick.geom.Point;
 public class Game extends BasicGame {
 	
 	public static final float WIDTH = 900;
-	public static final float HEIGHT = 600;
+	public static final float HEIGHT = 550;
 	
 	public GameEngine gameEngine;
 	

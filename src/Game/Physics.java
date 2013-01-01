@@ -76,7 +76,7 @@ public class Physics {
 		targetLocation.add(deltaLocation);
 		
 		Vector2f finalLocation = //this.collisionCheck(targetLocation);
-				this.collisionWithLayers(oldLocation, targetLocation);
+				this.collisionWithLayers(targetLocation);
 		finalLocation = this.collisionCheck(finalLocation);
 		
 		this.avatar.setLocation(finalLocation);
@@ -88,8 +88,7 @@ public class Physics {
 	}	
 	
 	/**
-	 * tarkistaa onko uusi koordinaatti laillinen. Voidaanko avatar siirtaa?
-	 * Palauttaa sijainnin johon olio paatyi tormayksen takia
+	 * tormaustarkistus ikkunan reunojen kanssa
 	 * @param to mihin yritetaan menna
 	 */
 	public Vector2f collisionCheck(Vector2f to){
@@ -125,9 +124,8 @@ public class Physics {
 		}
 
 		if (collisionY){
-			this.velocity.y = 0;
-			this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
-			//lahtemaan vastakkaiseen suuntaan
+			this.stopAvatarsMovement();
+			
 		}
 		
 		return new Vector2f(x,y);
@@ -135,42 +133,153 @@ public class Physics {
 	}
 	
 	
-	public Vector2f collisionWithLayers(Vector2f from, Vector2f to){
+	public Vector2f collisionWithLayers(Vector2f to){
+		Vector2f from = this.avatar.getLeftTop();
+		Vector2f leftBottom = this.avatar.getLeftBottom();
+		//motion on liikevektori
+		Vector2f fromNegate = from.negate();
+		Vector2f toCopy = to.copy();
+		Vector2f motion = toCopy.add(fromNegate); 
+		//System.out.println(motion); //xxx sivuttais liikettä ei huomioida
+		
+		//java avatarin pohjasta vasemmalta oikealle
+		Line bottomLine =
+				new Line(leftBottom, 
+						this.avatar.getRightBottom());
+		//avatarin pohjan y-koordinaatti alussa
+		float bottomY1 = from.y + this.avatar.getHeight();
+		//avatarin pohja y-koordinaatti lopussa
+		float bottomY2 = to.y + this.avatar.getHeight();
+		
+		//jana, joka kuvaa avatarin vasemman alakulman liikkeen
+		Line motionLine = new Line(leftBottom, leftBottom.copy().add(motion));
+		
+		//naita muutetaan jos tormataan, naista tulee lopullinen sijainti
 		float x = to.x;
 		float y = to.y;
+		
+		//ollaan menossa ylöspäin. Koordinaatisto kasvaa alas
+		if (to.y < from.y){
+			return to;
+		}
+		
 		//ollaan menossa alapain
-		if (to.y > from.y){
-			for (GameObject o : this.layers){
-				//System.out.println(this.layers.size());
-				if (to.y > o.getMinYabs()){
-					
-					
-					Line motionLine = new Line(from, to);
-					
-					Line layerLine = new Line(o.getLeftTop(), o.getRightTop());
-					
-					Vector2f intersectPoint = motionLine.intersect(layerLine);
-					//tästä jatkuu
-					/*
-					 *get point palautta 4 pistettä jotka ympäröivät kuvion
+		
+		
+		
+		
+		for (GameObject o : this.layers){
+			
+			//luodaan jana johon voi tormata, vaakajana
+			Line collisionLine = this.getCollisionLine(o);
+			
+			float avatarsWidth = this.avatar.getWidth();
+			
+			if (avatarsWidth > collisionLine.getWidth()){
+				System.err.println("Physics-luokka: tilannetta jossa avatar on " +
+						"leveämpi kuin pohjalaatta ei ole otettu vielä " +
+						"huomioon");
+			}
+			//layerin ylatason y-koordinaatti
+			float layerY = collisionLine.getY();
+			
+			
+			boolean collisionPossible = 
+					bottomY1 <= layerY && layerY <= bottomY2;
+			if (collisionPossible){
+				
+				
+			
+				//Avatarin pohjan vasemman alakulman x-koordinaatti sijainnissa
+				//jossa Avatar saattaisi tormata layeriin
+				float collisionX = this.getXfromY(layerY, motionLine);
+				float X1 = collisionX;
+				float X2 = collisionX + bottomLine.getWidth();
+				boolean collisionTrue = X2 > collisionLine.getX1() && X1 < 
+					collisionLine.getX2();
+				
+				if (collisionTrue){
+					x = collisionX;
+					y = layerY - this.avatar.getHeight();
+					this.stopAvatarsMovement();
+				}
+				
+			}
+			
+			
+			
+			
+			
+			if (to.y > o.getTopY()){
+
+
+				
+				Line layerLine = new Line(o.getLeftTop(), o.getRightTop());
+
+				Vector2f intersectPoint = motionLine.intersect(layerLine);
+				//tästä jatkuu
+				/*
+				 *get point palautta 4 pistettä jotka ympäröivät kuvion
 					float[] layerPoints = layerLine.getPoints();
 					float[] motionPoints = motionLine.getPoints();
 					for (int i=0 ; i < layerPoints.length; i++){
 						for (int j = 0; j < motionPoints.length ; j++)
-						
+
 						System.out.println(i);
 					}
-					*/
-				}
-				
-			
+				 */
 			}
+
+
 		}
-		
+
+
 		
 		return new Vector2f(x,y);
 	}
-
+	
+	/**
+	 * 
+	 * @param o
+	 * @return jana kuvan ylätasosta
+	 */
+	public Line getCollisionLine(GameObject o){
+		Vector2f startPoint = o.getLeftTop();
+		Vector2f endPoint = o.getRightTop();
+		return new Line(startPoint, endPoint);
+	}
+	
+	/**
+	 * Suoran yhtälö, sijoita y, saat x:n
+	 * @param y sijoita y-koordinaatti
+	 * @param line sisältää kaksi pistetta, jotka maarittavat suoran
+	 * @return saat x-koordinaatin
+	 */
+	public float getXfromY(float y, Line line){
+		/*
+		 * kulmakerroin k = (y2-y1)/(x2-x1)
+		 * suoran yhtalo: y - y1 = k(x-x1)
+		 * joten x = 1/k * (y-y1) + x1
+		 *  <=> x = (x2-x1)/(y2-y1) * (y-y1) + x1
+		 */
+		
+		float x1 = line.getX1();
+		float x2 = line.getX2();
+		float y1 = line.getY1();
+		float y2 = line.getY2();
+		
+		if (y2 == y1){
+			System.err.println("Physics-luokassa yritetään jakaa nollalla");
+			return (x2-x1)/2;
+		}
+		return (x2-x1)/(y2-y1) * (y-y1) + x1;
+	}
+	
+	public void stopAvatarsMovement(){
+		this.velocity.y = 0;
+		this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
+		//lahtemaan vastakkaiseen suuntaan
+	}
 
 
 	
