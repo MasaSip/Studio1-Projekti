@@ -1,13 +1,13 @@
 package Game;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.tests.AnimationTest;
 
 
 
@@ -30,7 +30,7 @@ public class Game extends BasicGame {
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 	
 		this.gameEngine.drawGameObjects();
-		
+
 	}
 
 	@Override
@@ -63,7 +63,8 @@ public class Game extends BasicGame {
 	}
 	
 	public void gameOver(GameContainer gc){
-		gc.exit();
+		// jos halutaan ikkunan menevän kiinni
+		//gc.exit();
 	}
 	
 	public static void main(String[] args) 

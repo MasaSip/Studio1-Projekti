@@ -41,10 +41,13 @@ public class Physics {
 	}
 	
 	public void jump(){
-		
+		//hyppyrajoitus toimii tällä xxx 
+		//if (this.avatar.isOnGround()){
+			
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
 		deltaV.y -= 700f;
 		this.velocity.add(deltaV);
+		//}
 	}
 	
 	public void moveAvatar(){
@@ -65,10 +68,7 @@ public class Physics {
 		//jaetaan 1000: lla koska delta yksikkoa ms
 		float scaleValue = this.delta/1000.0f;
 		Vector2f deltaLocation = new Vector2f(this.velocity).scale(scaleValue);
-		//float deltaX = this.velocity.x*this.delta/1000; // jaetaan 1000:lla
-		//float deltaY = this.velocity.y*this.delta/1000 ; //koska delta yksikkoa ms
-		//Vector2f deltaLocation = new Vector2f(deltaX, deltaY);
-		//avatarin sijaintiin lisataan sijainnin muutos
+		
 		
 		
 		Vector2f oldLocation = this.avatar.getLocationAbs();
@@ -81,8 +81,7 @@ public class Physics {
 		
 		this.avatar.setLocation(finalLocation);
 		
-		//AvatarsLocation.add(deltaLocation);
-		//this.collisionCheck(AvatarsLocation);
+		
 		
 		
 	}	
@@ -213,7 +212,9 @@ public class Physics {
 			
 			
 			
-			
+			/*
+			 * 
+			 * poistettan jos toimii ilman xxx
 			if (to.y > o.getTopY()){
 
 
@@ -222,7 +223,7 @@ public class Physics {
 
 				Vector2f intersectPoint = motionLine.intersect(layerLine);
 				//tästä jatkuu
-				/*
+				
 				 *get point palautta 4 pistettä jotka ympäröivät kuvion
 					float[] layerPoints = layerLine.getPoints();
 					float[] motionPoints = motionLine.getPoints();
@@ -232,14 +233,16 @@ public class Physics {
 						System.out.println(i);
 					}
 				 */
-			}
+			//}
 
 
 		}
 
-
+		Vector2f finalLocation = new Vector2f(x,y);
 		
-		return new Vector2f(x,y);
+		this.avatar.setOnGround(!finalLocation.equals(to));
+		
+		return finalLocation;
 	}
 	
 	/**
