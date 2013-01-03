@@ -17,7 +17,7 @@ public class View extends Rectangle {
 	
 	public View() {
 		super(0, 0, Game.WIDTH, Game.HEIGHT);
-		this.scrollingSpeed = 0.1f;
+		this.scrollingSpeed = 0.15f;
 	}
 	/**
 	 * 
@@ -49,9 +49,18 @@ public class View extends Rectangle {
 	 * @param delta viive edellisesta paivityksesta
 	 */
 	public void scroll(int delta){
+		
 		float oldY = this.getY();
 		float newY = oldY - delta*this.scrollingSpeed;
 		this.setY(newY);
+		this.increaseScrollingSpeed(delta);
+		
+	}
+	
+	public void increaseScrollingSpeed(int delta){
+		this.scrollingSpeed +=0.000005*delta;
+		
+		
 		
 	}
 }
