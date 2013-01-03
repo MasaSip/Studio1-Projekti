@@ -4,6 +4,13 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 
+/**
+ * Pelista piirretaan naytolle suorakulmion sisaan jaava osuus. Suorakulmion 
+ * sijaintiarvot ovat absoluuttisen koordinaatiston arvoja. Pelin edetessa 
+ * suorakulmio liikkuu ylemmas eli sen y-koordinaatit pienenevat. 
+ * Koska suorakulmio liikkuu ylospain, nayttaa kuin kaikki valuisi 
+ * itsestaan alaspain.
+ */
 
 public class View extends Rectangle {
 	private float scrollingSpeed;

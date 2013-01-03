@@ -20,7 +20,7 @@ public class Game extends BasicGame {
 	
 	public Game() throws SlickException{
 		super("Sokeri Humala");
-		this.gameEngine = new GameEngine();
+		this.gameEngine = new GameEngine(this);
 	}
 
 	@Override
@@ -56,8 +56,14 @@ public class Game extends BasicGame {
 		this.gameEngine.generateLayers();
 				
 		this.gameEngine.moveAvatar(input, delta);
-		
+		if (this.gameEngine.gameOver()){
+			this.gameOver(gc);
+		}
 	
+	}
+	
+	public void gameOver(GameContainer gc){
+		gc.exit();
 	}
 	
 	public static void main(String[] args) 

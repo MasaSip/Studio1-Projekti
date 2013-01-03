@@ -16,31 +16,28 @@ import org.newdawn.slick.geom.Vector2f;
 public class GameEngine {
 	 
 	
-	/**
-	 * Tietaa mika osa pelista tulee nayttaa ruudulle. Polygonin sijainti
-	 * absoluuttisen koordinaatiston arvoja. Pelin edetessa viewWindow liikkuu
-	 * ylemmas eli sen y-koordinaatit pienenevat. Koska viewWindow liikkuu 
-	 * ylospain, nayttaa kuin kaikki valuisi itsestaan alaspain.
-	 */
+
 	
 	private View view;
 	private Avatar avatar;
 	private GameObject bottomLayer;
 	private List <GameObject> layers;
-	private float lastLayer;
+	/**
+	 * on pelaaja painanut yhtaan nappia. Jos on, maailman scrollaus voidaan 
+	 * aloittaaa
+	 */
+	private boolean playerHasStarted;
 	private Physics physics;
 	private Random rnd;
 	
-	/**
-	 * kuinka korkealla nakyma on lahtotasosta
-	 */
-	private float distanceFromGround;
+	private Game game;
 	
 	private float distanceBetweenLayers = 150;
 	
-	public GameEngine() throws SlickException {
+	public GameEngine(Game game) throws SlickException {
+		this.game = game;
 		this.rnd = new Random();
-		this.layers = new ArrayList();
+		this.layers = new ArrayList<GameObject>();
 		GameObject bottomLayer = new GameObject("data/BottomLayer.png");
 		this.bottomLayer = bottomLayer;
 		this.layers.add(bottomLayer);
@@ -49,6 +46,7 @@ public class GameEngine {
 		this.avatar = new Avatar();
 		this.physics = new Physics(this.avatar);
 		this.view = new View();
+		this.playerHasStarted = false;
 	}
 	
 	public void putBottomLayerIntoGame(){
@@ -90,12 +88,13 @@ public class GameEngine {
 		}
 		if (move){			
 			this.avatar.move(new Vector2f(amount, 0f));
+			this.playerHasStarted = true;
 		}
 		
 		//tŠhŠn asti
 		
 		if (input.isKeyPressed(Input.KEY_SPACE) && this.avatar.isOnGround()){
-			
+			this.playerHasStarted = true;
 			this.physics.jump();
 		}
 		
@@ -158,8 +157,21 @@ public class GameEngine {
 	}
 	
 	public void scrollView(int delta){
-		this.view.scroll(delta);
+		if (this.playerHasStarted){
+			this.view.scroll(delta);
+		}
 	}
 	
+	/**
+	 * tarkistetaan onko peli havitty
+	 */
+	public boolean gameOver(){
+		
+		//jos avatar on hŠvinnyt kokonaan ruudun alalaitaan
+		if (this.avatar.getLocationAbs().getY() > this.view.getMaxY()){
+			return true;
+		}
+		return false;
+	}
 
 }
