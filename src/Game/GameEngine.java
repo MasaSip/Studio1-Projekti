@@ -2,10 +2,10 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 /**
  * Absoluuttisen koordinaatiston origo on vasen ylakulma aloitusnaytolta.
@@ -22,12 +22,14 @@ public class GameEngine {
 	 * ylemmas eli sen y-koordinaatit pienenevat. Koska viewWindow liikkuu 
 	 * ylospain, nayttaa kuin kaikki valuisi itsestaan alaspain.
 	 */
-	private Polygon viewWindow;
+	
+	private View view;
 	private Avatar avatar;
 	private GameObject bottomLayer;
 	private List <GameObject> layers;
 	private float lastLayer;
 	private Physics physics;
+	private Random rnd;
 	
 	/**
 	 * kuinka korkealla nakyma on lahtotasosta
@@ -37,16 +39,16 @@ public class GameEngine {
 	private float distanceBetweenLayers = 150;
 	
 	public GameEngine() throws SlickException {
+		this.rnd = new Random();
 		this.layers = new ArrayList();
 		GameObject bottomLayer = new GameObject("data/BottomLayer.png");
 		this.bottomLayer = bottomLayer;
 		this.layers.add(bottomLayer);
 		
-		float[] figure = 
-			{0f,0f, Game.WIDTH,0f, Game.WIDTH,Game.HEIGHT, 0f,Game.HEIGHT};
-		this.viewWindow = new Polygon(figure);
+		
 		this.avatar = new Avatar();
-		physics = new Physics(this.avatar);
+		this.physics = new Physics(this.avatar);
+		this.view = new View();
 	}
 	
 	public void putBottomLayerIntoGame(){
@@ -104,9 +106,9 @@ public class GameEngine {
 	
 	public void drawGameObjects(){
 		for (GameObject o : this.layers){
-			o.draw(this.viewWindow);
+			this.view.draw(o);
 		}
-		this.avatar.draw(this.viewWindow);
+		this.view.draw(this.avatar);
 	}
 	
 	public void loadImages() throws SlickException{
@@ -128,7 +130,7 @@ public class GameEngine {
 		
 		GameObject topLayer = this.layers.get(layersInGame -1);
 		float spaceAboveTopLayer = 
-				topLayer.getTopY() - this.viewWindow.getMinY();
+				topLayer.getTopY() - this.view.getMinY();
 	
 		if (spaceAboveTopLayer > this.distanceBetweenLayers){
 	
@@ -136,7 +138,9 @@ public class GameEngine {
 			newLayer.loadImage();
 			
 			//x ja y absoluuttisessa koordinaatistossa
-			float Xabs = this.viewWindow.getCenterX() - newLayer.getWidth()/2;
+			
+			float Xabs = rnd.nextFloat()*Game.WIDTH - newLayer.getWidth()/2;
+			//float Xabs = this.view.getCenterX() - newLayer.getWidth()/2;
 			float Yabs = topLayer.getTopY() 
 					- this.distanceBetweenLayers
 					- newLayer.getHeight();
@@ -151,6 +155,10 @@ public class GameEngine {
 	
 	public void updatePhysics(int delta){
 		this.physics.update(this.layers, delta);
+	}
+	
+	public void scrollView(int delta){
+		this.view.scroll(delta);
 	}
 	
 

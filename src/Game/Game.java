@@ -52,7 +52,7 @@ public class Game extends BasicGame {
 	public void update(GameContainer gc, int delta) throws SlickException {
 		this.gameEngine.updatePhysics(delta);
 		Input input = gc.getInput();
-		
+		this.gameEngine.scrollView(delta);
 		this.gameEngine.generateLayers();
 				
 		this.gameEngine.moveAvatar(input, delta);

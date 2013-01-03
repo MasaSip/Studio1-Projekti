@@ -25,7 +25,7 @@ public class Physics {
 	 */
 	private int delta;
 	
-	public static final float gravity = 1f;
+	public static final float gravity = 1.2f;
 	
 	public Physics(Avatar avatar) {
 		this.avatar = avatar;
@@ -43,7 +43,7 @@ public class Physics {
 	public void jump(){
 		
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
-		deltaV.y -= 1000f;
+		deltaV.y -= 700f;
 		this.velocity.add(deltaV);
 	}
 	
@@ -77,7 +77,7 @@ public class Physics {
 		
 		Vector2f finalLocation = //this.collisionCheck(targetLocation);
 				this.collisionWithLayers(targetLocation);
-		finalLocation = this.collisionCheck(finalLocation);
+		finalLocation = this.collisionWithWindow(this.avatar, finalLocation);
 		
 		this.avatar.setLocation(finalLocation);
 		
@@ -88,12 +88,13 @@ public class Physics {
 	}	
 	
 	/**
-	 * tormaustarkistus ikkunan reunojen kanssa
+	 * tormaustarkistus ikkunan reunojen kanssa.
+	 * @param o kenen tormaysta tarkistetaan
 	 * @param to mihin yritetaan menna
 	 */
-	public Vector2f collisionCheck(Vector2f to){
+	public Vector2f collisionWithWindow(GameObject o, Vector2f to){
 		//reagoi tormaykseen vasta kun kappaleet sisakkain
-	
+		
 		boolean collisionX = false;
 		boolean collisionY = false;
 		float x = to.x;
@@ -103,12 +104,15 @@ public class Physics {
 			x = 0;
 			collisionX = true;
 		}
+		/*
+		 * poista jos toimii ilman xxx 
 		if (y < 0) {
 			y = 0;
 			collisionY = true;
 		}
-		float maxX = Game.WIDTH - this.avatar.getWidth(); 
-		float maxY = Game.HEIGHT - this.avatar.getHeight();
+		 */
+		float maxX = Game.WIDTH - o.getWidth(); 
+		float maxY = Game.HEIGHT - o.getHeight();
 		if (x > (maxX)) {
 			x = maxX;
 			collisionX = true;
