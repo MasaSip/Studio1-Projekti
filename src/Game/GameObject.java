@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 
 
@@ -65,7 +65,10 @@ public class GameObject {
 	public float getTopY(){
 		return this.getLocationAbs().getY();
 	}
-	
+	/**
+	 * 
+	 * @return kuvan korkeus
+	 */
 	public float getHeight(){
 		return (float) this.image.getHeight();
 	}
