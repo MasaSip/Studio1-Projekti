@@ -1,12 +1,17 @@
-package Game;
+package game;
+
+import java.awt.Font;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.tests.AnimationTest;
 
 
@@ -17,7 +22,10 @@ public class Game extends BasicGame {
 	public static final float HEIGHT = 550;
 	
 	public GameEngine gameEngine;
-	
+	/*
+	 *turhaa testeilua xxx 
+	private UnicodeFont scoreFont;
+	 */
 	public Game() throws SlickException{
 		super("Sokeri Humala");
 		this.gameEngine = new GameEngine(this);
@@ -29,8 +37,12 @@ public class Game extends BasicGame {
 	 */
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 	
-		this.gameEngine.drawGameObjects();
-
+		this.gameEngine.drawGame(g);
+		
+		
+		
+		
+		
 	}
 
 	@Override
@@ -41,7 +53,17 @@ public class Game extends BasicGame {
 		this.gameEngine.loadImages();
 		this.gameEngine.putAvatarIntoGame();
 		this.gameEngine.putBottomLayerIntoGame();
+		
+		/* turhaa testailua xxx
+		 * this.scoreFont =
+				new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
+		scoreFont.addAsciiGlyphs();
+		scoreFont.getEffects().add(new ColorEffect());
+		scoreFont.loadGlyphs(1);
+		
+		 */
 	
+		
 	}
 
 	@Override
@@ -59,6 +81,7 @@ public class Game extends BasicGame {
 		if (this.gameEngine.gameOver()){
 			this.gameOver(gc);
 		}
+		this.gameEngine.updateScore();
 	
 	}
 	

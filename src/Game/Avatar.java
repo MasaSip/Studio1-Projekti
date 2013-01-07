@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -19,14 +19,27 @@ public class Avatar extends GameObject {
 	 * true jos Avatar on laatan paalla ja voi hypata
 	 */
 	private boolean onGround;
+	/**
+	 * Taman perusteella maaritetaan pistemaara, score
+	 */
+	private int bestHeight;
 	
 	public Avatar() throws SlickException {
 		super("data/A.png");
 		super.setSpeed(0.8f);
+		this.bestHeight = 0;
 		this.onGround = false;
 		
 		//xxx this.velocity = new Vector2f();
 		//xxx this.acceleration = new Vector2f(0, Physics.gravity);
+	}
+	
+	public int getBestHeight(){
+		return this.bestHeight;
+	}
+	
+	public void setBestHeight(int height){
+		this.bestHeight = height;
 	}
 	
 	public boolean isOnGround(){

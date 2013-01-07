@@ -1,9 +1,10 @@
-package Game;
+package game;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -103,11 +104,13 @@ public class GameEngine {
 		
 	}
 	
-	public void drawGameObjects(){
+	public void drawGame(Graphics g){
 		for (GameObject o : this.layers){
 			this.view.draw(o);
 		}
 		this.view.draw(this.avatar);
+		int score = this.avatar.getBestHeight();
+		this.view.drawScore(score, g);
 	}
 	
 	public void loadImages() throws SlickException{
@@ -154,6 +157,19 @@ public class GameEngine {
 	
 	public void updatePhysics(int delta){
 		this.physics.update(this.layers, delta);
+	}
+	
+	public void updateScore(){
+		float zeroHeight = 
+				Game.HEIGHT 
+				- this.avatar.getHeight() - this.bottomLayer.getHeight();
+	
+		float absHeight = this.avatar.getTopY();
+		float currentHeight = zeroHeight - absHeight;
+		if (currentHeight > this.avatar.getBestHeight()){
+			this.avatar.setBestHeight((int) currentHeight);
+			
+		}
 	}
 	
 	public void scrollView(int delta){
