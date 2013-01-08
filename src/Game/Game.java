@@ -85,9 +85,13 @@ public class Game extends BasicGame {
 	
 	}
 	
-	public void gameOver(GameContainer gc){
-		// jos halutaan ikkunan menevän kiinni
-		//gc.exit();
+	public void gameOver(GameContainer gc) throws SlickException
+	
+	{
+	
+		this.gameEngine = new GameEngine(this);
+		this.init(gc);
+		
 	}
 	
 	public static void main(String[] args) 

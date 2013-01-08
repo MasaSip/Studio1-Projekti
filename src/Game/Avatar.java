@@ -25,7 +25,7 @@ public class Avatar extends GameObject {
 	private int bestHeight;
 	
 	public Avatar() throws SlickException {
-		super("data/A.png");
+		super("data/Hamis.png");
 		super.setSpeed(0.8f);
 		this.bestHeight = 0;
 		this.onGround = false;

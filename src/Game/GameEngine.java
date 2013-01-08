@@ -136,7 +136,7 @@ public class GameEngine {
 	
 		if (spaceAboveTopLayer > this.distanceBetweenLayers){
 	
-			GameObject newLayer = new GameObject("data/Layer.png");
+			GameObject newLayer = new GameObject("data/Pilvi.png");
 			newLayer.loadImage();
 			
 			//x ja y absoluuttisessa koordinaatistossa
