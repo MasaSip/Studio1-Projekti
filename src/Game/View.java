@@ -24,7 +24,7 @@ public class View extends Rectangle {
 	
 	public View() {
 		super(0, 0, Game.WIDTH, Game.HEIGHT);
-		this.scrollingSpeed = 0.15f;
+		this.scrollingSpeed = 0.10f;
 		this.scoreColor = Color.red;//new Color(210, 50, 40, 255);
 		
 		this.scoreFont =
@@ -78,8 +78,6 @@ public class View extends Rectangle {
 	public void drawScore(int score, Graphics g){
 		g.setColor(this.scoreColor);
 		String scoreTxt = Integer.toString(score);
-		System.out.println(scoreTxt);
-		
 		
 		g.drawString(scoreTxt, Game.WIDTH - 50, 20); // xxx testi piirto
 		
@@ -89,8 +87,8 @@ public class View extends Rectangle {
 		
 		
 		UnicodeFont foont = new UnicodeFont(Font.decode("Comic Sans MS"), 48, false, false);
-				//new UnicodeFont(font);
+				//new UnicodeFont(font); 
 		foont.drawString(80, 40, "heippa");
-		
+		// allaoleva pŠŠttyy  xxx
 	}
 }

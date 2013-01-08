@@ -42,12 +42,12 @@ public class Physics {
 	
 	public void jump(){
 		//hyppyrajoitus toimii tällä xxx 
-		//if (this.avatar.isOnGround()){
+		if (this.avatar.isOnGround()){
 			
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
 		deltaV.y -= 700f;
 		this.velocity.add(deltaV);
-		//}
+		}
 	}
 	
 	public void moveAvatar(){
