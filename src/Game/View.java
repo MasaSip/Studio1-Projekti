@@ -81,10 +81,9 @@ public class View extends Rectangle {
 	
 	public void drawScore(int score, Graphics g){
 		g.setColor(this.scoreColor);
-		String scoreTxt = "Score: " + Integer.toString(score);
+		String scoreTxt = "Score \n" +  Integer.toString(score);
 		
-		this.scoreFont.drawString(Game.WIDTH - 150 , 30, scoreTxt);
-		//g.drawString(scoreTxt, Game.WIDTH - 50, 20); // xxx testi piirto
+		this.scoreFont.drawString(Game.WIDTH - 90 , 30, scoreTxt);
 		
 		
 		
