@@ -4,7 +4,9 @@ import java.awt.Font;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -22,13 +24,15 @@ public class View extends Rectangle {
 	private Color scoreColor;
 	private UnicodeFont scoreFont;
 	
-	public View() {
+	public View() throws SlickException {
 		super(0, 0, Game.WIDTH, Game.HEIGHT);
 		this.scrollingSpeed = 0.10f;
 		this.scoreColor = Color.red;//new Color(210, 50, 40, 255);
 		
-		this.scoreFont =
-			new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
+		Font awtFont = new Font("Comic Sans MS", Font.BOLD, 20);
+		this.scoreFont = new UnicodeFont(awtFont);
+			//new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
+		
 	}
 	/**
 	 * 
@@ -77,18 +81,22 @@ public class View extends Rectangle {
 	
 	public void drawScore(int score, Graphics g){
 		g.setColor(this.scoreColor);
-		String scoreTxt = Integer.toString(score);
+		String scoreTxt = "Score: " + Integer.toString(score);
 		
-		g.drawString(scoreTxt, Game.WIDTH - 50, 20); // xxx testi piirto
-		
-		// miks alla oleva ei toimi? xxx
-		Font font = new Font("Comic Sans MS", Font.BOLD, 40);
-		//g.setFont(Font);
+		this.scoreFont.drawString(Game.WIDTH - 150 , 30, scoreTxt);
+		//g.drawString(scoreTxt, Game.WIDTH - 50, 20); // xxx testi piirto
 		
 		
-		UnicodeFont foont = new UnicodeFont(Font.decode("Comic Sans MS"), 48, false, false);
-				//new UnicodeFont(font); 
-		foont.drawString(80, 40, "heippa");
-		// allaoleva pŠŠttyy  xxx
+		
 	}
+	
+	public void initFont() throws SlickException{
+		
+		this.scoreFont.addAsciiGlyphs();
+		ColorEffect red = new ColorEffect(java.awt.Color.red);
+		this.scoreFont.getEffects().add(red);
+		this.scoreFont.loadGlyphs();
+		
+	}
+	
 }

@@ -109,7 +109,7 @@ public class GameEngine {
 			this.view.draw(o);
 		}
 		this.view.draw(this.avatar);
-		int score = this.avatar.getBestHeight();
+		int score = this.avatar.getScore();
 		this.view.drawScore(score, g);
 	}
 	
@@ -166,7 +166,7 @@ public class GameEngine {
 	
 		float absHeight = this.avatar.getTopY();
 		float currentHeight = zeroHeight - absHeight;
-		if (currentHeight > this.avatar.getBestHeight()){
+		if (currentHeight > this.avatar.getScore()){
 			this.avatar.setBestHeight((int) currentHeight);
 			
 		}
@@ -188,6 +188,11 @@ public class GameEngine {
 			return true;
 		}
 		return false;
+	}
+	
+	public void initView() throws SlickException{
+		this.view.initFont();
+		
 	}
 
 }

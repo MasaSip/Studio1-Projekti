@@ -54,6 +54,8 @@ public class Game extends BasicGame {
 		this.gameEngine.putAvatarIntoGame();
 		this.gameEngine.putBottomLayerIntoGame();
 		
+		this.gameEngine.initView();
+		
 		/* turhaa testailua xxx
 		 * this.scoreFont =
 				new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);

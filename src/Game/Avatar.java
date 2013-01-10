@@ -10,36 +10,31 @@ public class Avatar extends GameObject {
 	/**
 	 * Mihin suuntaan Avatar liikkuu
 	 */
-	/*
-	 * taian sittenkin laittaa naa Physicsiin
-	private Vector2f velocity;
-	private Vector2f acceleration;
-	*/
+	
+	
 	/**
 	 * true jos Avatar on laatan paalla ja voi hypata
 	 */
 	private boolean onGround;
 	/**
-	 * Taman perusteella maaritetaan pistemaara, score
+	 * score = paras korkeus mihin avatar on paassyt
 	 */
-	private int bestHeight;
+	private int score;
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
 		super.setSpeed(0.8f);
-		this.bestHeight = 0;
+		this.score = 0;
 		this.onGround = false;
 		
-		//xxx this.velocity = new Vector2f();
-		//xxx this.acceleration = new Vector2f(0, Physics.gravity);
 	}
 	
-	public int getBestHeight(){
-		return this.bestHeight;
+	public int getScore(){
+		return this.score;
 	}
 	
 	public void setBestHeight(int height){
-		this.bestHeight = height;
+		this.score = height;
 	}
 	
 	public boolean isOnGround(){
@@ -49,16 +44,6 @@ public class Avatar extends GameObject {
 		this.onGround = onGround;
 	}
 	
-	/*
-	 * Physicsiin
-	public Vector2f getVelocity(){
-		return this.velocity;
-	}
-	
-	public Vector2f getAcceleration(){
-		return this.acceleration;
-	}
-	*/
 	
 	
 	public void jump(){
