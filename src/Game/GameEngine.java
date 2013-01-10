@@ -166,10 +166,9 @@ public class GameEngine {
 	
 		float absHeight = this.avatar.getTopY();
 		float currentHeight = zeroHeight - absHeight;
-		if (currentHeight > this.avatar.getScore()){
-			this.avatar.setBestHeight((int) currentHeight);
-			
-		}
+		this.avatar.updateScore(currentHeight);
+		
+		
 	}
 	
 	public void scrollView(int delta){

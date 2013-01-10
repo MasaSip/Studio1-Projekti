@@ -9,7 +9,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.tests.AnimationTest;
@@ -19,13 +21,11 @@ import org.newdawn.slick.tests.AnimationTest;
 public class Game extends BasicGame {
 	
 	public static final float WIDTH = 900;
-	public static final float HEIGHT = 550;
+	public static final float HEIGHT = 650;
 	
 	public GameEngine gameEngine;
-	/*
-	 *turhaa testeilua xxx 
-	private UnicodeFont scoreFont;
-	 */
+	
+	
 	public Game() throws SlickException{
 		super("Sokeri Humala");
 		this.gameEngine = new GameEngine(this);
@@ -55,16 +55,8 @@ public class Game extends BasicGame {
 		this.gameEngine.putBottomLayerIntoGame();
 		
 		this.gameEngine.initView();
+
 		
-		/* turhaa testailua xxx
-		 * this.scoreFont =
-				new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
-		scoreFont.addAsciiGlyphs();
-		scoreFont.getEffects().add(new ColorEffect());
-		scoreFont.loadGlyphs(1);
-		
-		 */
-	
 		
 	}
 
@@ -90,7 +82,7 @@ public class Game extends BasicGame {
 	public void gameOver(GameContainer gc) throws SlickException
 	
 	{
-	
+		
 		this.gameEngine = new GameEngine(this);
 		this.init(gc);
 		
@@ -102,10 +94,18 @@ public class Game extends BasicGame {
 
 		Game game = new Game();
 		AppGameContainer app = new AppGameContainer(game);
+		
 		app.setDisplayMode(
 				(int)Game.WIDTH,
 				(int) Game.HEIGHT, 
 				false);
+		
+		app.setShowFPS(false);
+		
+		//Musiikki soi jatkuvasti riippumatta alotetaan peli alusta.
+		Music music = new Music("data/Cajon_Party.wav");
+		music.loop(1.0f, 40f);
+		
 		app.start();
 		
 	}

@@ -45,7 +45,7 @@ public class Physics {
 		if (this.avatar.isOnGround()){
 			
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
-		deltaV.y -= 700f;
+		deltaV.y -= 1000f;
 		this.velocity.add(deltaV);
 		}
 	}
@@ -103,13 +103,7 @@ public class Physics {
 			x = 0;
 			collisionX = true;
 		}
-		/*
-		 * poista jos toimii ilman xxx 
-		if (y < 0) {
-			y = 0;
-			collisionY = true;
-		}
-		 */
+		
 		float maxX = Game.WIDTH - o.getWidth(); 
 		float maxY = Game.HEIGHT - o.getHeight();
 		if (x > (maxX)) {
@@ -163,7 +157,9 @@ public class Physics {
 		
 		//ollaan menossa ylöspäin. Koordinaatisto kasvaa alas
 		if (to.y < from.y){
+			this.avatar.setOnGround(false);
 			return to;
+			
 		}
 		
 		//ollaan menossa alapain
@@ -208,32 +204,7 @@ public class Physics {
 				}
 				
 			}
-			
-			
-			
-			
-			/*
-			 * 
-			 * poistettan jos toimii ilman xxx
-			if (to.y > o.getTopY()){
 
-
-				
-				Line layerLine = new Line(o.getLeftTop(), o.getRightTop());
-
-				Vector2f intersectPoint = motionLine.intersect(layerLine);
-				//tästä jatkuu
-				
-				 *get point palautta 4 pistettä jotka ympäröivät kuvion
-					float[] layerPoints = layerLine.getPoints();
-					float[] motionPoints = motionLine.getPoints();
-					for (int i=0 ; i < layerPoints.length; i++){
-						for (int j = 0; j < motionPoints.length ; j++)
-
-						System.out.println(i);
-					}
-				 */
-			//}
 
 
 		}
