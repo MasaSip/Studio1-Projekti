@@ -20,21 +20,31 @@ public class Avatar extends GameObject {
 	 * score = paras korkeus mihin avatar on paassyt
 	 */
 	private int score;
+	private float bestHeight;
+	
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
 		super.setSpeed(0.8f);
 		this.score = 0;
+		this.bestHeight = 0;
 		this.onGround = false;
 		
+	}
+	public float getBestHeight(){
+		return this.bestHeight;
 	}
 	
 	public int getScore(){
 		return this.score;
 	}
 	
-	public void setBestHeight(int height){
-		this.score = height;
+	public void setScore(int score){
+		this.score = score;
+	}
+	
+	public void setBestHeight(float height){
+		this.bestHeight = height;
 	}
 	
 	public boolean isOnGround(){
@@ -44,7 +54,18 @@ public class Avatar extends GameObject {
 		this.onGround = onGround;
 	}
 	
+	public void updateScore(float currentHeight){
+		if (currentHeight > this.getBestHeight()){
+			this.setBestHeight(currentHeight);
+			this.convertToScore(this.getBestHeight());
+			
+		}
+	}
 	
+	public void convertToScore(float height){
+		int score = (int) height/10;
+		this.setScore(score);
+	}
 	
 	public void jump(){
 		

@@ -36,18 +36,6 @@ public class GameObject {
 		return this.speed;
 	}
 
-	/*
-	 * xxx pois jos toimii ilman 
-	public void draw(View view) {
-		Vector2f locationOnScreen = this.getLocationOnScreen(viewWindow);
-		float XonScreen = locationOnScreen.getX();
-		float YonScreen = locationOnScreen.getY();
-		
-		this.image.draw
-			(XonScreen, YonScreen);
-		
-	}
-	 */
 	
 	/**
 	 * 
@@ -125,20 +113,6 @@ public class GameObject {
 		this.locationAbs = locationAbs;
 	}
 	
-	/*voi poistaa jos peli toimii xxx
-	public Vector2f getLocationOnScreen(View view){
-		float X = this.getLocationAbs().getX();
-		float Y = this.getLocationAbs().getY();
-		
-		float viewScrolled = this.v
-		 * float heightFromGround = Game.HEIGHT - viewWindow.getMaxY();
-		 
-		
-		float YonScreen = Y + heightFromGround;
-		
-		return new Vector2f(X, YonScreen);
-	}
-	*/
 	
 	public void loadImage() throws SlickException{
 		this.image = new Image(this.imageLocation);
