@@ -76,7 +76,13 @@ public class View extends Rectangle {
 	}
 	
 	public void increaseScrollingSpeed(int delta){
-		this.scrollingSpeed +=0.000005*delta;
+		if (this.scrollingSpeed < 0.25f){
+			
+			this.scrollingSpeed +=0.000005*delta;
+		}
+		
+	
+		
 		
 		
 		
@@ -86,7 +92,7 @@ public class View extends Rectangle {
 		g.setColor(this.scoreColor);
 		String scoreTxt = "Score \n" +  Integer.toString(score);
 		
-		this.scoreFont.drawString(Game.WIDTH - 90 , 30, scoreTxt);
+		this.scoreFont.drawString(Game.WIDTH - 490 , 30, scoreTxt);
 		
 		
 		
@@ -98,6 +104,16 @@ public class View extends Rectangle {
 		ColorEffect red = new ColorEffect(java.awt.Color.red);
 		this.scoreFont.getEffects().add(red);
 		this.scoreFont.loadGlyphs();
+		
+	}
+	
+	public void drawExtraInformation(Avatar avatar){
+		float bonus = avatar.getJumpingBonus();
+		String txt = "Bonari Voimat: " + bonus;
+		String scrl = "Scrollaus Nopeus ";
+		scrl += String.format("%.2f", this.scrollingSpeed);
+		scoreFont.drawString(10, 10, txt);
+		scoreFont.drawString(10, 60, scrl);
 		
 	}
 	

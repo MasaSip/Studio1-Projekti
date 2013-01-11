@@ -14,7 +14,7 @@ public class GameObject {
 	private Image image;
 	private String imageLocation;
 	private Vector2f locationAbs;
-	private float speed;
+	
 	
 	/**
 	 * 
@@ -29,12 +29,6 @@ public class GameObject {
 		return this.image;
 	}
 	
-	public void setSpeed(float s){
-		this.speed = s;
-	}
-	public float getSpeed(){
-		return this.speed;
-	}
 
 	
 	/**
