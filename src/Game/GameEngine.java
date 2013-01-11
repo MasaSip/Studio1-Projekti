@@ -24,10 +24,10 @@ public class GameEngine {
 	private GameObject bottomLayer;
 	private List <GameObject> layers;
 	/**
-	 * on pelaaja painanut yhtaan nappia. Jos on, maailman scrollaus voidaan 
+	 * onko pelaaja painanut yhtaan nappia. Jos on, maailman scrollaus voidaan 
 	 * aloittaaa
 	 */
-	private boolean playerHasStarted;
+	private boolean scrollingOn;
 	private Physics physics;
 	private Random rnd;
 	
@@ -47,7 +47,7 @@ public class GameEngine {
 		this.avatar = new Avatar();
 		this.physics = new Physics(this.avatar);
 		this.view = new View();
-		this.playerHasStarted = false;
+		this.scrollingOn = false;
 	}
 	
 	public void putBottomLayerIntoGame(){
@@ -55,6 +55,14 @@ public class GameEngine {
 		this.avatar.move(new Vector2f(0,-this.bottomLayer.getHeight()));
 		
 		
+	}
+	
+	/**
+	 * 
+	 * @param scrollingOn true, jos scrollataan, false jos ei
+	 */
+	public void setScrollingOn(boolean scrollingOn){
+		this.scrollingOn = scrollingOn;
 	}
 	
 	public void putAvatarIntoGame() throws SlickException{
@@ -76,7 +84,7 @@ public class GameEngine {
 	 */
 	public void moveAvatar(Input input, int delta){
 		
-		//xxx kannattaa muuttaa physicsia käyttäväksi
+		//XXX: kannattaa muuttaa physicsia käyttäväksi
 		float amount = this.avatar.getSpeed()*delta;
 		boolean move = false;
 		if (input.isKeyDown(Input.KEY_LEFT)){
@@ -89,13 +97,13 @@ public class GameEngine {
 		}
 		if (move){			
 			this.avatar.move(new Vector2f(amount, 0f));
-			this.playerHasStarted = true;
+			this.scrollingOn = true;
 		}
 		
 		//tähän asti
 		
 		if (input.isKeyPressed(Input.KEY_SPACE) && this.avatar.isOnGround()){
-			this.playerHasStarted = true;
+			this.scrollingOn = true;
 			this.physics.jump();
 		}
 		
@@ -172,7 +180,7 @@ public class GameEngine {
 	}
 	
 	public void scrollView(int delta){
-		if (this.playerHasStarted){
+		if (this.scrollingOn){
 			this.view.scroll(delta);
 		}
 	}

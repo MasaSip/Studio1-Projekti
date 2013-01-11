@@ -16,18 +16,22 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.tests.AnimationTest;
 
-
+/**
+* Pelin kuvat ovat Sonja Kiiverin piirtamia. Musiikkin ovat tehneet 
+* Nora Bergman ja Aapo Haapasalo.
+* 
+*/
 
 public class Game extends BasicGame {
 	
-	public static final float WIDTH = 900;
+	public static final float WIDTH = 1600;
 	public static final float HEIGHT = 650;
 	
 	public GameEngine gameEngine;
 	
 	
 	public Game() throws SlickException{
-		super("Sokeri Humala");
+		super("Tyttelš Peli");
 		this.gameEngine = new GameEngine(this);
 	}
 
@@ -86,6 +90,7 @@ public class Game extends BasicGame {
 		this.gameEngine = new GameEngine(this);
 		this.init(gc);
 		
+		
 	}
 	
 	public static void main(String[] args) 
@@ -102,9 +107,10 @@ public class Game extends BasicGame {
 		
 		app.setShowFPS(false);
 		
-		//Musiikki soi jatkuvasti riippumatta alotetaan peli alusta.
+		//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
 		Music music = new Music("data/Cajon_Party.wav");
 		music.loop(1.0f, 40f);
+		
 		
 		app.start();
 		
