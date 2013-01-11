@@ -17,6 +17,9 @@ import org.newdawn.slick.geom.Vector2f;
  * suorakulmio liikkuu ylemmas eli sen y-koordinaatit pienenevat. 
  * Koska suorakulmio liikkuu ylospain, nayttaa kuin kaikki valuisi 
  * itsestaan alaspain.
+ * 
+ *
+ * 
  */
 
 public class View extends Rectangle {

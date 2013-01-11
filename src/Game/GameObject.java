@@ -124,12 +124,16 @@ public class GameObject {
 	 * alkuperaisiin x ja y koordinaatteihin
 	 */
 	public void move(Vector2f vector){
+		/*
+		 * XXX: turhaa
 		float currentX = this.locationAbs.getX();
 		float currentY = this.locationAbs.getY();
 		float newX = currentX + vector.getX();
 		float newY = currentY + vector.getY();
-		
 		this.locationAbs.set(newX, newY);
+		 */
+		this.locationAbs.add(vector);
+	
 		
 	}
 	
