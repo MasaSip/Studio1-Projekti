@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
  * Liikuttaa kappaleita painovoiman mukaisesti. Pitaa huolen esim. Avatarin
  * lentoradasta hypynaikana. viewWindow:in liikkumisesta aiheutuva naennainen
  * liike ei kuulu tanne.
- * @author 345707
+ * 
  *
  */
 public class Physics {
@@ -45,7 +45,7 @@ public class Physics {
 		if (this.avatar.isOnGround()){
 			
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
-		deltaV.y -= 1000f;
+		deltaV.y -= this.avatar.getJumpingPower();
 		this.velocity.add(deltaV);
 		}
 	}

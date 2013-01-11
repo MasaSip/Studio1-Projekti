@@ -30,12 +30,13 @@ public class GameEngine {
 	private boolean scrollingOn;
 	private Physics physics;
 	private Random rnd;
+	private Boolean extraInfo;
 	
-	private Game game;
+	private GamePlayState game;
 	
-	private float distanceBetweenLayers = 150;
+	private final float DISTANCEBETWEENLAYERS = 100;
 	
-	public GameEngine(Game game) throws SlickException {
+	public GameEngine(GamePlayState game) throws SlickException {
 		this.game = game;
 		this.rnd = new Random();
 		this.layers = new ArrayList<GameObject>();
@@ -48,6 +49,7 @@ public class GameEngine {
 		this.physics = new Physics(this.avatar);
 		this.view = new View();
 		this.scrollingOn = false;
+		this.extraInfo = true;
 	}
 	
 	public void putBottomLayerIntoGame(){
@@ -83,26 +85,53 @@ public class GameEngine {
 	 * liikumisesta
 	 */
 	public void moveAvatar(Input input, int delta){
-		
+		MovingStatus state = this.avatar.getMovingStatus();
+		boolean left = input.isKeyDown(Input.KEY_LEFT);
+		boolean right = input.isKeyDown(Input.KEY_RIGHT);
 		//XXX: kannattaa muuttaa physicsia kŠyttŠvŠksi
+		
+		//mita korkeammalle avatar hyppaisi, sita kovemmin se kipittaa
 		float amount = this.avatar.getSpeed()*delta;
 		boolean move = false;
-		if (input.isKeyDown(Input.KEY_LEFT)){
+		if (left){
 			amount = -amount;
 			move = true;
 		}
 		
-		if (input.isKeyDown(Input.KEY_RIGHT)){
+		if (right){	
 			move = true;
 		}
+		//painetaan pelkastaan vasenta
+		if (left && !right){
+			if (state.equals(MovingStatus.RIGHT)){// && this.avatar.isOnGround()){
+				this.avatar.decreaseJumpingBonus(70);
+			}
+			this.avatar.setMovingStatus(MovingStatus.LEFT);
+		}
+		//painetaan pelkastaan oikeaa
+		if (!left && right){
+			if (state.equals(MovingStatus.LEFT)){// && this.avatar.isOnGround()){
+				this.avatar.decreaseJumpingBonus(70);
+			}
+			
+			this.avatar.setMovingStatus(MovingStatus.RIGHT);
+		}
+		
 		if (move){			
+			
 			this.avatar.move(new Vector2f(amount, 0f));
 			this.scrollingOn = true;
+			if (this.avatar.isOnGround()){				
+				this.avatar.increaseJumpingBonus();
+			}
+		}
+		else {
+			this.avatar.decreaseConstantValue(1);
 		}
 		
 		//tŠhŠn asti
 		
-		if (input.isKeyPressed(Input.KEY_SPACE) && this.avatar.isOnGround()){
+		if (input.isKeyDown(Input.KEY_SPACE) && this.avatar.isOnGround()){
 			this.scrollingOn = true;
 			this.physics.jump();
 		}
@@ -119,6 +148,10 @@ public class GameEngine {
 		this.view.draw(this.avatar);
 		int score = this.avatar.getScore();
 		this.view.drawScore(score, g);
+		
+		if (this.extraInfo){
+			this.view.drawExtraInformation(this.avatar);
+		}
 	}
 	
 	public void loadImages() throws SlickException{
@@ -142,7 +175,7 @@ public class GameEngine {
 		float spaceAboveTopLayer = 
 				topLayer.getTopY() - this.view.getMinY();
 	
-		if (spaceAboveTopLayer > this.distanceBetweenLayers){
+		if (spaceAboveTopLayer > this.DISTANCEBETWEENLAYERS){
 	
 			GameObject newLayer = new GameObject("data/Pilvi.png");
 			newLayer.loadImage();
@@ -152,7 +185,7 @@ public class GameEngine {
 			float Xabs = rnd.nextFloat()*Game.WIDTH - newLayer.getWidth()/2;
 			//float Xabs = this.view.getCenterX() - newLayer.getWidth()/2;
 			float Yabs = topLayer.getTopY() 
-					- this.distanceBetweenLayers
+					- this.DISTANCEBETWEENLAYERS
 					- newLayer.getHeight();
 			
 			Vector2f locationAbs = new Vector2f(Xabs, Yabs);
