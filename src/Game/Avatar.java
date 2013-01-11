@@ -16,10 +16,6 @@ public class Avatar extends GameObject {
 	 * true jos Avatar on laatan paalla ja voi hypata
 	 */
 	private boolean onGround;
-	/**
-	 * score = paras korkeus mihin avatar on paassyt
-	 */
-	private int score;
 	private float bestHeight;
 	
 	private float basicSpeed;
@@ -39,7 +35,6 @@ public class Avatar extends GameObject {
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
 		this.setBasicSpeed(0.8f);
-		this.score = 0;
 		this.bestHeight = 0;
 		this.onGround = false;
 		this.basicJump = 800f;
@@ -104,6 +99,11 @@ public class Avatar extends GameObject {
 	public void setBasicSpeed(float s){
 		this.basicSpeed = s;
 	}
+	
+	/**
+	 * 
+	 * @return kokonaisnopeus koostuu perus nopeudesta ja JumpingBonuksesta
+	 */
 	public float getSpeed(){
 		return this.basicSpeed + this.getJumpingBonus()/1000;
 	}
@@ -119,14 +119,6 @@ public class Avatar extends GameObject {
 		return this.bestHeight;
 	}
 	
-	public int getScore(){
-		return this.score;
-	}
-	
-	public void setScore(int score){
-		this.score = score;
-	}
-	
 	public void setBestHeight(float height){
 		this.bestHeight = height;
 	}
@@ -138,18 +130,7 @@ public class Avatar extends GameObject {
 		this.onGround = onGround;
 	}
 	
-	public void updateScore(float currentHeight){
-		if (currentHeight > this.getBestHeight()){
-			this.setBestHeight(currentHeight);
-			this.convertToScore(this.getBestHeight());
-			
-		}
-	}
 	
-	public void convertToScore(float height){
-		int score = (int) height/10;
-		this.setScore(score);
-	}
 	
 	public void jump(){
 		

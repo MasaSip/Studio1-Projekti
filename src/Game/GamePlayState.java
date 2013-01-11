@@ -51,8 +51,6 @@ public class GamePlayState extends BasicGameState {
 		
 		
 		
-		
-		
 	}
 
 	@Override
@@ -92,7 +90,10 @@ public class GamePlayState extends BasicGameState {
 	public void gameOver(GameContainer gc, StateBasedGame game) throws SlickException
 	
 	{
-		
+		int score = this.gameEngine.getScore();
+		MenuState state = (MenuState) game.getState(Game.MENUSTATE);
+		state.addScore(score);
+		state.updateMenuText();
 		this.gameEngine = new GameEngine(this);
 		this.init(gc, game);
 		this.enterState(game, Game.MENUSTATE);

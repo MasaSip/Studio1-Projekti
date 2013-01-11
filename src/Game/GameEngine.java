@@ -35,6 +35,10 @@ public class GameEngine {
 	private GamePlayState game;
 	
 	private final float DISTANCEBETWEENLAYERS = 100;
+	/**
+	 * score = paras korkeus mihin avatar on paassyt
+	 */
+	private int score;
 	
 	public GameEngine(GamePlayState game) throws SlickException {
 		this.game = game;
@@ -50,6 +54,28 @@ public class GameEngine {
 		this.view = new View();
 		this.scrollingOn = false;
 		this.extraInfo = true;
+		this.score = 0;
+	}
+	
+	public int getScore(){
+		return this.score;
+	}
+	
+	public void setScore(int score){
+		this.score = score;
+	}
+	
+	public void convertToScore(float height){
+		int score = (int) height/10;
+		this.setScore(score);
+	}
+	
+	public void updateScore(float currentHeight){
+		if (currentHeight > this.avatar.getBestHeight()){
+			this.avatar.setBestHeight(currentHeight);
+			this.convertToScore(this.avatar.getBestHeight());
+			
+		}
 	}
 	
 	public void putBottomLayerIntoGame(){
@@ -146,12 +172,14 @@ public class GameEngine {
 			this.view.draw(o);
 		}
 		this.view.draw(this.avatar);
-		int score = this.avatar.getScore();
+		int score = this.getScore();
 		this.view.drawScore(score, g);
 		
 		if (this.extraInfo){
 			this.view.drawExtraInformation(this.avatar);
 		}
+		
+		this.view.drawBackground(g);
 	}
 	
 	public void loadImages() throws SlickException{
@@ -207,15 +235,23 @@ public class GameEngine {
 	
 		float absHeight = this.avatar.getTopY();
 		float currentHeight = zeroHeight - absHeight;
-		this.avatar.updateScore(currentHeight);
+		this.updateScore(currentHeight);
 		
 		
 	}
 	
 	public void scrollView(int delta){
 		if (this.scrollingOn){
-			this.view.scroll(delta);
+			this.view.scroll(delta, true);
 		}
+		
+		float topYOnScreen = this.view.getMinY();
+		float limit = this.view.getAutoScrollLimit();
+		GameObject o = this.avatar;
+		if (this.objectIsHigherThan(topYOnScreen, limit, o)){
+			this.view.scroll(delta, false);
+		}
+		
 	}
 	
 	/**
@@ -233,6 +269,28 @@ public class GameEngine {
 	public void initView() throws SlickException{
 		this.view.initFont();
 		
+	}
+	/**
+	 * 
+	 * @param y -koordinaatti
+	 * @param percent kuinka monta % tulisi olla y-koordinaatin ylapuolella
+	 * @param o esim. Avatar
+	 * @return
+	 */
+	public boolean objectIsHigherThan(float y, float percent, GameObject o){
+		float oHeight = o.getHeight();
+		float objectY = o.getTopY();
+		
+		//o on kokonaan rajan alapuolella
+		if (objectY > y){
+			return false;
+		}
+		
+		float percentAtm = (y - objectY)/oHeight*100;
+		if (percent <= percentAtm){
+			return true;
+		}
+		return false;
 	}
 
 }

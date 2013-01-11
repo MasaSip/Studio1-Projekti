@@ -23,13 +23,22 @@ import org.newdawn.slick.geom.Vector2f;
  */
 
 public class View extends Rectangle {
-	private float scrollingSpeed;
+	
 	private Color scoreColor;
 	private UnicodeFont scoreFont;
+	private ScrollFunction scrollFunction;
+	
+	/**
+	 * jos autoScrollLimit % Avatrista on ruudun ylapuolella, scrollataan ruutua ylospain
+	 * kasvattamatta scrollausnopeutta
+	 */
+	private final float autoScrollLimit = 70;
+	
+	
 	
 	public View() throws SlickException {
 		super(0, 0, Game.WIDTH, Game.HEIGHT);
-		this.scrollingSpeed = 0.10f;
+		this.scrollFunction = new ScrollFunction();
 		this.scoreColor = Color.red;//new Color(210, 50, 40, 255);
 		
 		Font awtFont = new Font("Comic Sans MS", Font.BOLD, 20);
@@ -37,6 +46,11 @@ public class View extends Rectangle {
 			//new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
 		
 	}
+	
+	public float getAutoScrollLimit(){
+		return this.autoScrollLimit;
+	}
+	
 	/**
 	 * 
 	 * @return kuinka paljon maailmaa on kelattu
@@ -65,28 +79,22 @@ public class View extends Rectangle {
 	/**
 	 * 
 	 * @param delta viive edellisesta paivityksesta
+	 * @param speedIncrease kasvatetaanko samalla scrollausnopeutta
 	 */
-	public void scroll(int delta){
+	public void scroll(int delta, boolean speedIncrease){
 		
 		float oldY = this.getY();
-		float newY = oldY - delta*this.scrollingSpeed;
+		float newY = oldY - delta*this.scrollFunction.scrollingSpeed;
 		this.setY(newY);
-		this.increaseScrollingSpeed(delta);
-		
-	}
-	
-	public void increaseScrollingSpeed(int delta){
-		if (this.scrollingSpeed < 0.25f){
-			
-			this.scrollingSpeed +=0.000005*delta;
+		if (speedIncrease){			
+			this.scrollFunction.increaseScrollingSpeed(delta);
 		}
 		
-	
-		
-		
-		
-		
 	}
+	
+	
+	
+
 	
 	public void drawScore(int score, Graphics g){
 		g.setColor(this.scoreColor);
@@ -111,10 +119,55 @@ public class View extends Rectangle {
 		float bonus = avatar.getJumpingBonus();
 		String txt = "Bonari Voimat: " + bonus;
 		String scrl = "Scrollaus Nopeus ";
-		scrl += String.format("%.2f", this.scrollingSpeed);
+		scrl += String.format("%.2f", this.scrollFunction.scrollingSpeed);
 		scoreFont.drawString(10, 10, txt);
 		scoreFont.drawString(10, 60, scrl);
 		
+	}
+	
+	public void drawBackground(Graphics g){
+		Color pink = new Color(245, 215, 235);
+		g.setBackground(pink);
+	}
+	
+	/**
+	 * scrollSpeedLimitit kertovat, milloin on aika muuttaa kiihtyvyytta.
+	 * Aluksi scrollausnopeutta kasvatetaan delta*value taulukon 1. arvo. 
+	 * Kun limit taulukon eka arvo on ylittynyt, scrollausnopeutta kasvatetaan 
+	 * delta*value taulukon 2. arvo jne.
+	 */
+	public class ScrollFunction {
+		
+		private float scrollingSpeed;
+		
+		private final float[] value = {0.005f, 0.008f, 0.005f, 0.005f};
+		private final float[] limit = {0.12f, 0.22f, 0.23f};
+		
+		
+		
+		public ScrollFunction(){
+			this.scrollingSpeed = 0.10f;
+		}
+		
+		public void increaseScrollingSpeed(int delta){
+			System.out.println(this.scrollingSpeed);
+			float increase = 0;
+			
+			for (int i = 0; i < this.limit.length; i++){
+				
+				if (i == this.limit.length-1){
+					increase = value[i+1];
+				}
+				
+				else if(this.scrollingSpeed < limit[i]){
+					increase = value[i];
+				}
+						
+			}
+			//jaetaan 1000:lla koska delta on millisekuntteja
+			this.scrollingSpeed += increase*delta/1000;
+			
+		}
 	}
 	
 }
