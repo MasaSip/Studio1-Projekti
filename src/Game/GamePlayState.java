@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Font;
 
+import menu.MenuState;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;

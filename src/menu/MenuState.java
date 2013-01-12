@@ -1,4 +1,6 @@
-package game;
+package menu;
+
+import game.Game;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class MenuState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		this.showLastScores(g, new Point(800,40));
-		this.font.drawString(200, Game.HEIGHT - 200, this.menuText);
+		this.font.drawString(200, Game.HEIGHT - 400, this.menuText);
 		g.setBackground(Color.white);
 		g.drawImage(this.background, 10, 10);
 		
@@ -126,7 +128,7 @@ public class MenuState extends BasicGameState {
 	}
 	
 	public void updateMenuText(){
-		this.menuText = "Hihii, uudestaan!";
+		this.menuText = "Pikku torkut tähän väliin. Herätä, jos haluut uusiks.";
 	}
 
 }

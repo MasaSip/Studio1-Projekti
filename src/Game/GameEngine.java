@@ -21,8 +21,8 @@ public class GameEngine {
 	
 	private View view;
 	private Avatar avatar;
-	private GameObject bottomLayer;
-	private List <GameObject> layers;
+	private Layer bottomLayer;
+	private List <Layer> layers;
 	/**
 	 * onko pelaaja painanut yhtaan nappia. Jos on, maailman scrollaus voidaan 
 	 * aloittaaa
@@ -43,8 +43,8 @@ public class GameEngine {
 	public GameEngine(GamePlayState game) throws SlickException {
 		this.game = game;
 		this.rnd = new Random();
-		this.layers = new ArrayList<GameObject>();
-		GameObject bottomLayer = new GameObject("data/BottomLayer.png");
+		this.layers = new ArrayList<Layer>();
+		Layer bottomLayer = new Layer("data/BottomLayer.png");
 		this.bottomLayer = bottomLayer;
 		this.layers.add(bottomLayer);
 		
@@ -168,7 +168,7 @@ public class GameEngine {
 	}
 	
 	public void drawGame(Graphics g){
-		for (GameObject o : this.layers){
+		for (Layer o : this.layers){
 			this.view.draw(o);
 		}
 		this.view.draw(this.avatar);
@@ -185,7 +185,7 @@ public class GameEngine {
 	public void loadImages() throws SlickException{
 		this.avatar.loadImage();
 		this.bottomLayer.loadImage();
-		for (GameObject o : this.layers){
+		for (Layer o : this.layers){
 			o.loadImage();
 		}
 	}
@@ -199,13 +199,13 @@ public class GameEngine {
 	public void generateLayers() throws SlickException{
 		int layersInGame = this.layers.size();
 		
-		GameObject topLayer = this.layers.get(layersInGame -1);
+		Layer topLayer = this.layers.get(layersInGame -1);
 		float spaceAboveTopLayer = 
 				topLayer.getTopY() - this.view.getMinY();
 	
 		if (spaceAboveTopLayer > this.DISTANCEBETWEENLAYERS){
 	
-			GameObject newLayer = new GameObject("data/Pilvi.png");
+			Layer newLayer = new Layer("data/Pilvi.png");
 			newLayer.loadImage();
 			
 			//x ja y absoluuttisessa koordinaatistossa
