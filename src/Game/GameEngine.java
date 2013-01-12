@@ -147,9 +147,10 @@ public class GameEngine {
 			
 			this.avatar.move(new Vector2f(amount, 0f));
 			this.scrollingOn = true;
-			if (this.avatar.isOnGround()){				
+			//XXX onko hyva etta bonusta saa myšs ilmassa liikkumisesta?
+			//if (this.avatar.isOnGround()){				
 				this.avatar.increaseJumpingBonus();
-			}
+			//}
 		}
 		else {
 			this.avatar.decreaseConstantValue(1);
@@ -248,8 +249,12 @@ public class GameEngine {
 		float topYOnScreen = this.view.getMinY();
 		float limit = this.view.getAutoScrollLimit();
 		GameObject o = this.avatar;
-		if (this.objectIsHigherThan(topYOnScreen, limit, o)){
+		
+		
+		while (this.objectIsHigherThan(topYOnScreen, limit, o)){
+			
 			this.view.scroll(delta, false);
+			limit = limit*1.2f;
 		}
 		
 	}
@@ -292,5 +297,7 @@ public class GameEngine {
 		}
 		return false;
 	}
+	
+	
 
 }
