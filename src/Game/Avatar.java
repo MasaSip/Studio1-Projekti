@@ -34,12 +34,12 @@ public class Avatar extends GameObject {
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
-		this.setBasicSpeed(0.8f);
+		this.setBasicSpeed(0.5f);
 		this.bestHeight = 0;
 		this.onGround = false;
 		this.basicJump = 800f;
 		this.jumpingBonus = 0f;
-		this.maxBonus = 500f;
+		this.maxBonus = 700f;
 		this.movingStatus = MovingStatus.STATIC;
 		
 	}
@@ -109,7 +109,10 @@ public class Avatar extends GameObject {
 	}
 	
 	public void increaseJumpingBonus(){
-		this.jumpingBonus += 2;
+		this.jumpingBonus += 3;
+		if (this.jumpingBonus > this.maxBonus/3){
+			this.jumpingBonus +=2;
+		}
 		if (this.getJumpingBonus() > this.maxBonus){
 			this.jumpingBonus = this.maxBonus;
 		}

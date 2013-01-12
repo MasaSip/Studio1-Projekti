@@ -1,5 +1,7 @@
 package game;
 
+import menu.MenuState;
+
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -13,8 +15,8 @@ public class Game extends StateBasedGame {
 	
 	public static final int GAMEPLAYSTATE = -1;
 	public static final int MENUSTATE = 0;
-	public static final float WIDTH = 1600;
-	public static final float HEIGHT = 650;
+	public static final float WIDTH = 1400;
+	public static final float HEIGHT = 750;
 	
 	public Game() {
 		super("Tyttelš Peli");
@@ -50,7 +52,8 @@ public class Game extends StateBasedGame {
 			
 			//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
 			Music music = new Music("data/Cajon_Party.wav");
-			music.loop(1.0f, 40f);
+			music.loop(1.0f, 1f);
+			
 			
 			
 			app.start();

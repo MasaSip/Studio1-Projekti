@@ -16,9 +16,14 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class Physics {
 	private Avatar avatar;
-	private List<GameObject> layers;
+	private List<Layer> layers;
 	private Vector2f velocity;
 	private Vector2f acceleration;
+	/**
+	 * vähintään tän verran Avatarin leveydesta nakyy kokoajan. Sivuttais 
+	 * tormays tapahtuu vasta ruudun ulkopuolella.
+	 */
+	private final float minVisible = 40;
 	
 	/**
 	 * viive edellisesta game-loopin update-metodin kutsumisesta
@@ -29,13 +34,13 @@ public class Physics {
 	
 	public Physics(Avatar avatar) {
 		this.avatar = avatar;
-		this.layers = new ArrayList<GameObject>();
+		this.layers = new ArrayList<Layer>();
 		this.velocity = new Vector2f();
 		this.acceleration = new Vector2f(0, Physics.gravity);
 	}
 	
 	
-	public void update(List<GameObject> layers, int delta){
+	public void update(List<Layer> layers, int delta){
 		this.delta = delta;
 		this.layers = layers;
 	}
@@ -94,17 +99,21 @@ public class Physics {
 	public Vector2f collisionWithWindow(GameObject o, Vector2f to){
 		//reagoi tormaykseen vasta kun kappaleet sisakkain
 		
+		float width = this.avatar.getWidth();
+		//kuinka paljon Avatarista voi enimmillaan menna ruudun sivun taakse
+		float invisibleMax = this.getPercentageValue(this.minVisible, width);
+		
 		boolean collisionX = false;
 		boolean collisionY = false;
 		float x = to.x;
 		float y = to.y;
 		
-		if (x < 0) {
-			x = 0;
+		if (x < -invisibleMax) {
+			x = -invisibleMax;
 			collisionX = true;
 		}
 		
-		float maxX = Game.WIDTH - o.getWidth(); 
+		float maxX = Game.WIDTH - o.getWidth() + invisibleMax; 
 		float maxY = Game.HEIGHT - o.getHeight();
 		if (x > (maxX)) {
 			x = maxX;
@@ -167,10 +176,10 @@ public class Physics {
 		
 		
 		
-		for (GameObject o : this.layers){
+		for (Layer layer : this.layers){
 			
 			//luodaan jana johon voi tormata, vaakajana
-			Line collisionLine = this.getCollisionLine(o);
+			Line collisionLine = layer.getCollisionLine();
 			
 			float avatarsWidth = this.avatar.getWidth();
 			
@@ -181,6 +190,7 @@ public class Physics {
 			}
 			//layerin ylatason y-koordinaatti
 			float layerY = collisionLine.getY();
+			
 			
 			
 			boolean collisionPossible = 
@@ -216,16 +226,7 @@ public class Physics {
 		return finalLocation;
 	}
 	
-	/**
-	 * 
-	 * @param o
-	 * @return jana kuvan ylätasosta
-	 */
-	public Line getCollisionLine(GameObject o){
-		Vector2f startPoint = o.getLeftTop();
-		Vector2f endPoint = o.getRightTop();
-		return new Line(startPoint, endPoint);
-	}
+	
 	
 	/**
 	 * Suoran yhtälö, sijoita y, saat x:n
@@ -258,7 +259,16 @@ public class Physics {
 		this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
 		//lahtemaan vastakkaiseen suuntaan
 	}
-
+	
+	/**
+	 * 
+	 * @param percent prosenttia
+	 * @param a
+	 * @return p % a:sta
+	 */
+	public float getPercentageValue(float percent, float a){
+		return percent/100.0f*a;
+	}
 
 	
 }

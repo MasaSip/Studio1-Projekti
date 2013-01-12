@@ -117,7 +117,9 @@ public class View extends Rectangle {
 	
 	public void drawExtraInformation(Avatar avatar){
 		float bonus = avatar.getJumpingBonus();
-		String txt = "Bonari Voimat: " + bonus;
+		String txt = "Bonari Voimat: ";
+		txt += String.format("%.0f", bonus);
+		
 		String scrl = "Scrollaus Nopeus ";
 		scrl += String.format("%.2f", this.scrollFunction.scrollingSpeed);
 		scoreFont.drawString(10, 10, txt);
@@ -140,8 +142,9 @@ public class View extends Rectangle {
 		
 		private float scrollingSpeed;
 		
-		private final float[] value = {0.005f, 0.008f, 0.005f, 0.005f};
-		private final float[] limit = {0.12f, 0.22f, 0.23f};
+		//XXX value-limit järjestelmä tuskin toimii kunnolla
+		private final float[] value = {0.002f, 0.005f, 0.005f, 0.003f};
+		private final float[] limit = {0.12f, 0.24f, 0.30f};
 		
 		
 		
@@ -161,6 +164,7 @@ public class View extends Rectangle {
 				
 				else if(this.scrollingSpeed < limit[i]){
 					increase = value[i];
+					break;
 				}
 						
 			}
