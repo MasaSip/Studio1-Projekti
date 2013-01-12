@@ -32,7 +32,7 @@ public class View extends Rectangle {
 	 * jos autoScrollLimit % Avatrista on ruudun ylapuolella, scrollataan ruutua ylospain
 	 * kasvattamatta scrollausnopeutta
 	 */
-	private final float autoScrollLimit = 70;
+	private final float autoScrollLimit = 40;
 	
 	
 	
@@ -79,12 +79,21 @@ public class View extends Rectangle {
 	/**
 	 * 
 	 * @param delta viive edellisesta paivityksesta
-	 * @param speedIncrease kasvatetaanko samalla scrollausnopeutta
+	 * @param speedIncrease kasvatetaanko samalla scrollausnopeutta	 
 	 */
 	public void scroll(int delta, boolean speedIncrease){
+		this.scroll(1.0f, delta, speedIncrease);
+	}
+	
+	/**
+	 * @param k scrollataa k kertaa vakioarvo
+	 * @param delta viive edellisesta paivityksesta
+	 * @param speedIncrease kasvatetaanko samalla scrollausnopeutta
+	 */
+	public void scroll(float k, int delta, boolean speedIncrease){
 		
 		float oldY = this.getY();
-		float newY = oldY - delta*this.scrollFunction.scrollingSpeed;
+		float newY = oldY - delta*this.scrollFunction.scrollingSpeed*k;
 		this.setY(newY);
 		if (speedIncrease){			
 			this.scrollFunction.increaseScrollingSpeed(delta);
@@ -117,13 +126,18 @@ public class View extends Rectangle {
 	
 	public void drawExtraInformation(Avatar avatar){
 		float bonus = avatar.getJumpingBonus();
+		float gap = 50.0f;
 		String txt = "Bonari Voimat: ";
 		txt += String.format("%.0f", bonus);
 		
 		String scrl = "Scrollaus Nopeus ";
 		scrl += String.format("%.2f", this.scrollFunction.scrollingSpeed);
 		scoreFont.drawString(10, 10, txt);
-		scoreFont.drawString(10, 60, scrl);
+		scoreFont.drawString(10, 10 +gap, scrl);
+		
+		String increase = "increase: ";
+		increase += String.format("%.3f", this.scrollFunction.lastIncrease);
+		scoreFont.drawString(10, 10 +2*gap, increase);
 		
 	}
 	
@@ -141,10 +155,11 @@ public class View extends Rectangle {
 	public class ScrollFunction {
 		
 		private float scrollingSpeed;
+		private float lastIncrease = 0.0f;
 		
-		//XXX value-limit järjestelmä tuskin toimii kunnolla
-		private final float[] value = {0.002f, 0.005f, 0.005f, 0.003f};
-		private final float[] limit = {0.12f, 0.24f, 0.30f};
+		//value taulukon tulee olla yhden pidempi kuin limit taulukko
+		private final float[] value = {0.002f, 0.008f, 0.008f, 0.001f};
+		private final float[] limit = {0.12f, 0.16f, 0.27f};
 		
 		
 		
@@ -153,23 +168,27 @@ public class View extends Rectangle {
 		}
 		
 		public void increaseScrollingSpeed(int delta){
-			System.out.println(this.scrollingSpeed);
+	
 			float increase = 0;
 			
 			for (int i = 0; i < this.limit.length; i++){
 				
-				if (i == this.limit.length-1){
-					increase = value[i+1];
-				}
-				
-				else if(this.scrollingSpeed < limit[i]){
+				if(this.scrollingSpeed < limit[i]){
 					increase = value[i];
 					break;
 				}
-						
 			}
+			/*jos scrolling speed on suurempi kuin suurin limit tauluko arvo,
+			* niin increase saa arvokseen value-taulukon viimeisimmian arvon
+			*/
+			if (increase == 0){
+				increase = value[value.length -1];
+			}
+				
+			
 			//jaetaan 1000:lla koska delta on millisekuntteja
 			this.scrollingSpeed += increase*delta/1000;
+			this.lastIncrease = increase;
 			
 		}
 	}
