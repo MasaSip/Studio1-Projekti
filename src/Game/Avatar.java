@@ -37,7 +37,7 @@ public class Avatar extends GameObject {
 		this.setBasicSpeed(0.5f);
 		this.bestHeight = 0;
 		this.onGround = false;
-		this.basicJump = 800f;
+		this.basicJump = 850f;
 		this.jumpingBonus = 0f;
 		this.maxBonus = 700f;
 		this.movingStatus = MovingStatus.STATIC;
@@ -82,7 +82,7 @@ public class Avatar extends GameObject {
 	 * vahennestaan jumpingBonusta vakiomaara
 	 * @param constant
 	 */
-	public void decreaseConstantValue(float constant){
+	public void decreaseJumpingConstant(float constant){
 		float bonus = this.getJumpingBonus();
 		bonus -= constant;
 		this.setJumpingBonus(bonus);
@@ -105,13 +105,13 @@ public class Avatar extends GameObject {
 	 * @return kokonaisnopeus koostuu perus nopeudesta ja JumpingBonuksesta
 	 */
 	public float getSpeed(){
-		return this.basicSpeed + this.getJumpingBonus()/1000;
+		return this.basicSpeed + 1.2f*this.getJumpingBonus()/1000;
 	}
 	
 	public void increaseJumpingBonus(){
 		this.jumpingBonus += 3;
 		if (this.jumpingBonus > this.maxBonus/3){
-			this.jumpingBonus +=2;
+			this.jumpingBonus +=1;//+=2;
 		}
 		if (this.getJumpingBonus() > this.maxBonus){
 			this.jumpingBonus = this.maxBonus;
@@ -133,9 +133,11 @@ public class Avatar extends GameObject {
 		this.onGround = onGround;
 	}
 	
-	
-	
-	public void jump(){
-		
+	public void changeDirection(MovingStatus newStatus){
+		this.decreaseJumpingBonus(70);
+		this.decreaseJumpingConstant(this.maxBonus/8);
+		this.setMovingStatus(newStatus);
 	}
+	
+	
 }
