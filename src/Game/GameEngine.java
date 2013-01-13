@@ -119,6 +119,9 @@ public class GameEngine {
 		//mita korkeammalle avatar hyppaisi, sita kovemmin se kipittaa
 		float amount = this.avatar.getSpeed()*delta;
 		boolean move = false;
+		/*
+		 * 
+		
 		if (left){
 			amount = -amount;
 			move = true;
@@ -127,20 +130,25 @@ public class GameEngine {
 		if (right){	
 			move = true;
 		}
+		 */
 		//painetaan pelkastaan vasenta
 		if (left && !right){
+			amount = -amount;
+			move = true;
 			if (state.equals(MovingStatus.RIGHT)){// && this.avatar.isOnGround()){
-				this.avatar.decreaseJumpingBonus(70);
+				this.avatar.changeDirection(MovingStatus.LEFT);
+				
 			}
-			this.avatar.setMovingStatus(MovingStatus.LEFT);
+			this.avatar.setMovingStatus(MovingStatus.LEFT); //XXX
 		}
 		//painetaan pelkastaan oikeaa
 		if (!left && right){
+			move = true;
 			if (state.equals(MovingStatus.LEFT)){// && this.avatar.isOnGround()){
-				this.avatar.decreaseJumpingBonus(70);
-			}
+				this.avatar.changeDirection(MovingStatus.RIGHT);		
+				}
 			
-			this.avatar.setMovingStatus(MovingStatus.RIGHT);
+			this.avatar.setMovingStatus(MovingStatus.RIGHT);//XXX
 		}
 		
 		if (move){			
@@ -153,7 +161,7 @@ public class GameEngine {
 			//}
 		}
 		else {
-			this.avatar.decreaseConstantValue(1);
+			this.avatar.decreaseJumpingConstant(1);
 		}
 		
 		//tähän asti

@@ -41,7 +41,7 @@ public class View extends Rectangle {
 		this.scrollFunction = new ScrollFunction();
 		this.scoreColor = Color.red;//new Color(210, 50, 40, 255);
 		
-		Font awtFont = new Font("Comic Sans MS", Font.BOLD, 20);
+		Font awtFont = new Font("Comic Sans MS", Font.BOLD, 25);
 		this.scoreFont = new UnicodeFont(awtFont);
 			//new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
 		
@@ -129,15 +129,17 @@ public class View extends Rectangle {
 		float gap = 50.0f;
 		String txt = "Bonari Voimat: ";
 		txt += String.format("%.0f", bonus);
+		scoreFont.drawString(10, 10, txt);
+		
 		
 		String scrl = "Scrollaus Nopeus ";
 		scrl += String.format("%.2f", this.scrollFunction.scrollingSpeed);
-		scoreFont.drawString(10, 10, txt);
 		scoreFont.drawString(10, 10 +gap, scrl);
 		
 		String increase = "increase: ";
 		increase += String.format("%.3f", this.scrollFunction.lastIncrease);
 		scoreFont.drawString(10, 10 +2*gap, increase);
+		
 		
 	}
 	
@@ -158,13 +160,15 @@ public class View extends Rectangle {
 		private float lastIncrease = 0.0f;
 		
 		//value taulukon tulee olla yhden pidempi kuin limit taulukko
-		private final float[] value = {0.002f, 0.008f, 0.008f, 0.001f};
-		private final float[] limit = {0.12f, 0.16f, 0.27f};
+		private final float[] value = {0.01f, 0.005f};
+			//{0.005f, 0.015f, 0.025f,0.015f, 0.01f, 0.005f};
+		private final float[] limit = {0.4f};
+			//{0.05f, 0.07f, 0.40f, 0.48f,0.5f};
 		
 		
 		
 		public ScrollFunction(){
-			this.scrollingSpeed = 0.10f;
+			this.scrollingSpeed = 0.03f;
 		}
 		
 		public void increaseScrollingSpeed(int delta){
