@@ -47,9 +47,9 @@ public class Game extends StateBasedGame {
 			(int) Game.HEIGHT, 
 			false);
 			
-			
+			app.setTargetFrameRate(50);
 			app.setShowFPS(false);
-			
+			app.setVSync(true);
 			//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
 			Music music = new Music("data/Cajon_Party.wav");
 			music.loop(1.0f, 1f);
