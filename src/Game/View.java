@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -41,7 +42,8 @@ public class View extends Rectangle {
 		this.scrollFunction = new ScrollFunction();
 		this.scoreColor = Color.red;//new Color(210, 50, 40, 255);
 		
-		Font awtFont = new Font("Comic Sans MS", Font.BOLD, 25);
+		Font awtFont = new Font("Chalkduster", Font.BOLD, 36);
+
 		this.scoreFont = new UnicodeFont(awtFont);
 			//new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
 		
@@ -59,14 +61,25 @@ public class View extends Rectangle {
 		return Math.abs(this.getMinY());
 	}
 	
-	public void draw(GameObject o){
-		Vector2f location = this.getLocationOnScreen(o);
+	public void draw(GameObject o, Graphics g, boolean extraInfo){
+		Vector2f location = this.getLocationOnScreen(o.getLocationAbs());
 		o.getImage().draw(location.getX(), location.getY());
+		if (extraInfo && o instanceof Layer){
+			Layer l = (Layer) o;
+			Line collisionLine = l.getCollisionLine();
+			Vector2f startAbs = collisionLine.getStart();
+			Vector2f endAbs = collisionLine.getEnd();
+			Vector2f start = this.getLocationOnScreen(startAbs);
+			Vector2f end = this.getLocationOnScreen(endAbs);
+			g.setColor(Color.magenta);
+			g.drawLine(start.getX(), start.getY(), end.getX(), end.getY());
+			
+		}
 	}
 	
-	public Vector2f getLocationOnScreen(GameObject o){
-		float X = o.getLocationAbs().getX();
-		float Y = o.getLocationAbs().getY();
+	public Vector2f getLocationOnScreen(Vector2f abs){
+		float X = abs.getX();
+		float Y = abs.getY();
 		
 		float viewScrolled = this.getScrolledDistance();
 	
@@ -107,7 +120,7 @@ public class View extends Rectangle {
 	
 	public void drawScore(int score, Graphics g){
 		g.setColor(this.scoreColor);
-		String scoreTxt = "Score \n" +  Integer.toString(score);
+		String scoreTxt = "PARAS KORKEUS \n" +  Integer.toString(score);
 		
 		this.scoreFont.drawString(Game.WIDTH - 490 , 30, scoreTxt);
 		
@@ -118,7 +131,8 @@ public class View extends Rectangle {
 	public void initFont() throws SlickException{
 		
 		this.scoreFont.addAsciiGlyphs();
-		ColorEffect red = new ColorEffect(java.awt.Color.red);
+		java.awt.Color menuColor = new java.awt.Color(245, 0, 0);
+		ColorEffect red = new ColorEffect(menuColor);//java.awt.Color.red);
 		this.scoreFont.getEffects().add(red);
 		this.scoreFont.loadGlyphs();
 		
@@ -129,7 +143,7 @@ public class View extends Rectangle {
 		float gap = 50.0f;
 		
 		
-		String txt = "Bonari Voimat: ";
+		String txt = "BONARI VOIMAT: ";
 		txt += String.format("%.0f", bonus);
 		scoreFont.drawString(10, 10, txt);
 		

@@ -43,17 +43,18 @@ public class MenuState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		this.initFont(30);
+		this.initFont(35);
 		this.background = new Image("data/NukkuvaHamis.png");
 		
 		
 	}
 	
 	public void initFont(int size) throws SlickException{
-		Font awtFont = new Font("Comic Sans MS", Font.BOLD, size);
+		Font awtFont = new Font("Chalkduster", Font.BOLD, size);
 		this.font = new UnicodeFont(awtFont);
 		this.font.addAsciiGlyphs();
-		ColorEffect red = new ColorEffect(java.awt.Color.red);
+		java.awt.Color menuColor = new java.awt.Color(225, 0, 0);
+		ColorEffect red = new ColorEffect(menuColor);//new Color(159, 0, 0));//java.awt.Color.red);
 		this.font.getEffects().add(red);
 		this.font.loadGlyphs();
 	}
@@ -128,7 +129,7 @@ public class MenuState extends BasicGameState {
 	}
 	
 	public void updateMenuText(){
-		this.menuText = "Pikku torkut tähän väliin. Herätä, jos haluut uusiks.";
+		this.menuText = "Pikku torkut tähän väliin. Herätä, jos haluut uusiks!";
 	}
 
 }
