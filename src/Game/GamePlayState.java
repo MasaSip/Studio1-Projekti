@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Font;
+import java.util.ArrayList;
 
 import menu.MenuState;
 
@@ -36,6 +37,9 @@ public class GamePlayState extends BasicGameState {
 	public GameEngine gameEngine;
 	
 	
+	
+	
+	
 	public GamePlayState(int stateID) throws SlickException{
 		this.gameEngine = new GameEngine(this);
 		this.stateID = stateID;
@@ -48,6 +52,7 @@ public class GamePlayState extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 	
 		this.gameEngine.drawGame(g);
+		
 		
 		
 		
@@ -76,8 +81,11 @@ public class GamePlayState extends BasicGameState {
 	 * @param delta kauanko on aikaa edellisesta paivityksesta
 	 */
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		
+		
 		this.gameEngine.updatePhysics(delta);
 		Input input = gc.getInput();
+		
 		this.gameEngine.scrollView(delta);
 		this.gameEngine.generateLayers();
 				
@@ -86,6 +94,11 @@ public class GamePlayState extends BasicGameState {
 			this.gameOver(gc, game);
 		}
 		this.gameEngine.updateScore();
+		
+		this.gameEngine.update(input, delta);
+		
+		
+		
 	
 	}
 	

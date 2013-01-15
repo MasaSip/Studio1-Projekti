@@ -108,10 +108,11 @@ public class Avatar extends GameObject {
 		return this.basicSpeed + 1.2f*this.getJumpingBonus()/1000;
 	}
 	
-	public void increaseJumpingBonus(){
-		this.jumpingBonus += 3;
+	public void increaseJumpingBonus(int delta){
+		
+		this.jumpingBonus += 3*delta/4.6f; //XXX
 		if (this.jumpingBonus > this.maxBonus/3){
-			this.jumpingBonus +=1;//+=2;
+			this.jumpingBonus +=1*delta/4.6f;//+=2;
 		}
 		if (this.getJumpingBonus() > this.maxBonus){
 			this.jumpingBonus = this.maxBonus;

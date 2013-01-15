@@ -18,7 +18,8 @@ public class GameEngine {
 	 
 	
 
-	
+	private List<Integer> deltas;
+	private float averageDelta;
 	private View view;
 	private Avatar avatar;
 	private Layer bottomLayer;
@@ -30,6 +31,10 @@ public class GameEngine {
 	private boolean scrollingOn;
 	private Physics physics;
 	private Random rnd;
+	/**
+	 * jos true, naytolle piirretaan ylimaaraisia tietoja kuten scrollaus 
+	 * nopeus
+	 */
 	private Boolean extraInfo;
 	
 	private GamePlayState game;
@@ -41,6 +46,7 @@ public class GameEngine {
 	private int score;
 	
 	public GameEngine(GamePlayState game) throws SlickException {
+		this.deltas = new ArrayList();
 		this.game = game;
 		this.rnd = new Random();
 		this.layers = new ArrayList<Layer>();
@@ -53,9 +59,10 @@ public class GameEngine {
 		this.physics = new Physics(this.avatar);
 		this.view = new View();
 		this.scrollingOn = false;
-		this.extraInfo = true;
+		this.extraInfo = false;
 		this.score = 0;
 	}
+	
 	
 	public int getScore(){
 		return this.score;
@@ -114,6 +121,7 @@ public class GameEngine {
 		MovingStatus state = this.avatar.getMovingStatus();
 		boolean left = input.isKeyDown(Input.KEY_LEFT);
 		boolean right = input.isKeyDown(Input.KEY_RIGHT);
+		boolean spaceDown = input.isKeyDown(Input.KEY_SPACE);
 		//XXX: kannattaa muuttaa physicsia kŠyttŠvŠksi
 		
 		//mita korkeammalle avatar hyppaisi, sita kovemmin se kipittaa
@@ -157,7 +165,7 @@ public class GameEngine {
 			this.scrollingOn = true;
 			//XXX onko hyva etta bonusta saa myšs ilmassa liikkumisesta?
 			//if (this.avatar.isOnGround()){				
-				this.avatar.increaseJumpingBonus();
+				this.avatar.increaseJumpingBonus(delta);
 			//}
 		}
 		else {
@@ -166,7 +174,7 @@ public class GameEngine {
 		
 		//tŠhŠn asti
 		
-		if (input.isKeyDown(Input.KEY_SPACE) && this.avatar.isOnGround()){
+		if (spaceDown && this.avatar.isOnGround()){
 			this.scrollingOn = true;
 			this.physics.jump();
 		}
@@ -184,9 +192,11 @@ public class GameEngine {
 		int score = this.getScore();
 		this.view.drawScore(score, g);
 		
-		if (this.extraInfo){
-			this.view.drawExtraInformation(this.avatar);
-		}
+		
+		
+	
+		this.view.drawInformation(this.avatar, this.averageDelta, this.extraInfo);
+	
 		
 		this.view.drawBackground(g);
 	}
@@ -233,6 +243,19 @@ public class GameEngine {
 		}
 	}
 	
+	/**
+	 * paivitetaan GameEnginen tietoja esim. naytetaanko ylimaaraisia tietoja
+	 * vai ei
+	 * @param input
+	 * @param delta
+	 */
+	public void update(Input input, int delta){
+		this.updateAverageDelta(delta);
+		if (input.isKeyPressed(Input.KEY_E)){
+			this.extraInfo = !this.extraInfo;
+		}
+	}
+	
 	public void updatePhysics(int delta){
 		this.physics.update(this.layers, delta);
 	}
@@ -247,6 +270,20 @@ public class GameEngine {
 		this.updateScore(currentHeight);
 		
 		
+	}
+	
+	public void updateAverageDelta(int delta){
+		this.deltas.add(delta);
+		int size = deltas.size();
+		if (size > 1000){
+			this.deltas.remove(0);
+		}
+		int sum = 0;
+		for (int i : this.deltas){
+			sum += i;
+		}
+		
+		this.averageDelta = sum/(float)size;
 	}
 	
 	public void scrollView(int delta){
