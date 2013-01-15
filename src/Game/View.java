@@ -124,24 +124,39 @@ public class View extends Rectangle {
 		
 	}
 	
-	public void drawExtraInformation(Avatar avatar){
+	public void drawInformation(Avatar avatar, float average, boolean extra){
 		float bonus = avatar.getJumpingBonus();
 		float gap = 50.0f;
+		
+		
 		String txt = "Bonari Voimat: ";
 		txt += String.format("%.0f", bonus);
 		scoreFont.drawString(10, 10, txt);
 		
+		if (!extra) return;
 		
 		String scrl = "Scrollaus Nopeus ";
-		scrl += String.format("%.2f", this.scrollFunction.scrollingSpeed);
+		scrl += this.format(2, this.scrollFunction.scrollingSpeed);
+				//String.format("%.2f", this.scrollFunction.scrollingSpeed);
 		scoreFont.drawString(10, 10 +gap, scrl);
 		
 		String increase = "increase: ";
-		increase += String.format("%.3f", this.scrollFunction.lastIncrease);
+		increase += this.format(3, this.scrollFunction.lastIncrease);
+				//String.format("%.3f", this.scrollFunction.lastIncrease);
 		scoreFont.drawString(10, 10 +2*gap, increase);
+		
+		String averg = "average delta: ";
+		averg += this.format(5, average);
+		scoreFont.drawString(10, 10 + 3*gap, averg);
 		
 		
 	}
+	
+	public String format(int desimals, float number){
+		String dsmals = Integer.toString(desimals);
+		return String.format("%." + dsmals + "f", number);
+	}
+	
 	
 	public void drawBackground(Graphics g){
 		Color pink = new Color(245, 215, 235);
