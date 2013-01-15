@@ -1,28 +1,17 @@
 package game;
 
-import java.awt.Font;
-import java.util.ArrayList;
-
 import menu.MenuState;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
-import org.newdawn.slick.tests.AnimationTest;
 
 /**
 * Pelin kuvat ovat Sonja Kiiverin piirtamia. Musiikkin ovat tehneet 
@@ -51,7 +40,9 @@ public class GamePlayState extends BasicGameState {
 	 */
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 	
+
 		this.gameEngine.drawGame(g);
+		
 		
 		
 		

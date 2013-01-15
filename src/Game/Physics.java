@@ -45,8 +45,11 @@ public class Physics {
 		this.layers = layers;
 	}
 	
+	/**
+	 * jos avatar on maassa, avatar hyppaa
+	 */
 	public void jump(){
-		//hyppyrajoitus toimii tällä xxx 
+		
 		if (this.avatar.isOnGround()){
 			
 		Vector2f deltaV = new Vector2f(this.acceleration).scale(delta);
@@ -142,16 +145,17 @@ public class Physics {
 	public Vector2f collisionWithLayers(Vector2f to){
 		Vector2f from = this.avatar.getLeftTop();
 		Vector2f leftBottom = this.avatar.getLeftBottom();
+		Vector2f rightBottom = this.avatar.getRightBottom();
+		
 		//motion on liikevektori
 		Vector2f fromNegate = from.negate();
 		Vector2f toCopy = to.copy();
 		Vector2f motion = toCopy.add(fromNegate); 
-		//System.out.println(motion); //xxx sivuttais liikettä ei huomioida
+		
 		
 		//java avatarin pohjasta vasemmalta oikealle
 		Line bottomLine =
-				new Line(leftBottom, 
-						this.avatar.getRightBottom());
+				new Line(leftBottom, rightBottom);
 		//avatarin pohjan y-koordinaatti alussa
 		float bottomY1 = from.y + this.avatar.getHeight();
 		//avatarin pohja y-koordinaatti lopussa
@@ -192,18 +196,23 @@ public class Physics {
 			float layerY = collisionLine.getY();
 			
 			
-			
+			//tormays mahdollinen vain jos ollaan menossa alaspain
 			boolean collisionPossible = 
 					bottomY1 <= layerY && layerY <= bottomY2;
 			if (collisionPossible){
 				
 				
-			
-				//Avatarin pohjan vasemman alakulman x-koordinaatti sijainnissa
-				//jossa Avatar saattaisi tormata layeriin
+				/*
+				Avatarin pohjan vasemman alakulman x-koordinaatti sijainnissa
+				jossa Avatar saattaisi tormata layeriin.
+				collisionX on se x-koordinaatin taso, jossa törmäys voisi
+				tapahtua
+				 */
 				float collisionX = this.getXfromY(layerY, motionLine);
 				float X1 = collisionX;
 				float X2 = collisionX + bottomLine.getWidth();
+				//x1 avatarin vasen alakulma, x2 oikea.
+				//cLine.getX1 laatan vasen yläkulma, getX2 oikea
 				boolean collisionTrue = X2 > collisionLine.getX1() && X1 < 
 					collisionLine.getX2();
 				

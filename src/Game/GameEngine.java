@@ -186,9 +186,10 @@ public class GameEngine {
 	
 	public void drawGame(Graphics g){
 		for (Layer o : this.layers){
-			this.view.draw(o);
+			this.view.draw(o, g ,this.extraInfo);
+			
 		}
-		this.view.draw(this.avatar);
+		this.view.draw(this.avatar ,g ,this.extraInfo);
 		int score = this.getScore();
 		this.view.drawScore(score, g);
 		
