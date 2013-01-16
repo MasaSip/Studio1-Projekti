@@ -4,18 +4,18 @@ import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Vector2f;
 /**
  * 
- * Layer luokalle vois olla käyttöä
- *	tai luokka LayerLine extends Line?
+ * 
  */
 public class Layer extends GameObject {
 	
-	/*
-	 * XXX: jos freeSpace on jotain muuta kuin 0, peli lakka toimimasta 
+	/**
+	 * Kuinka paljon kuvakkeen ylälaidasta on tyhjää tilaa, johon ei voi 
+	 * törmätä?
 	 */
 	private float freeSpace = 10;
 	
-	public Layer(String imageLocation) {
-		super(imageLocation);
+	public Layer(String imageReference) {
+		super(imageReference);
 		
 	}
 	/**

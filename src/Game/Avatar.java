@@ -169,9 +169,16 @@ public class Avatar extends GameObject {
 		this.onGround = onGround;
 	}
 	
+	/**
+	 * 
+	 * @param newStatus uusi suunta
+	 */
 	public void changeDirection(MovingStatus newStatus){
-		this.decreaseBonusPercent(70);
-		this.decreaseBonusConstant(this.maxBonus/8);
+		if (!newStatus.equals(MovingStatus.STATIC)){
+			this.decreaseBonusPercent(70);
+			this.decreaseBonusConstant(this.maxBonus/8);
+		}
+		
 		this.setMovingStatus(newStatus);
 	}
 	
