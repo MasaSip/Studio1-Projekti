@@ -1,50 +1,59 @@
 package game;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.geom.Vector2f;
 
 public class Avatar extends GameObject {
-	/**
-	 * Mihin suuntaan Avatar liikkuu
-	 */
 	
 	
 	/**
 	 * true jos Avatar on laatan paalla ja voi hypata
 	 */
 	private boolean onGround;
+	
+	/**
+	 * Paras korkeus, jonka Avatar on saavuttanut
+	 */
 	private float bestHeight;
 	
-	private float basicSpeed;
-	
 	/**
-	 * hypyn kokonaisvoima = basicJump + jumpingBonus
+	 * Nopeus vaakasuunnassa. TŠmŠn pŠŠlle lisŠtŠŠn mahdollinen jumpingBonus 
 	 */
-	private float basicJump;
+	private final float basicSpeed = 0.5f;
 	
 	/**
-	 * hypyn kokonaisvoima = basicJump + jumpingBonus
+	 * Hypyn nopeusvektori = basicJump + jumpingBonus
+	 */
+	private final float basicJump = 850f;
+	
+	/**
+	 * Hypyn kokonaisvoima = basicJump + jumpingBonus
 	 */
 	private float jumpingBonus;
-	private float maxBonus;
-	private MovingStatus movingStatus;
+	
 	/**
-	 * bonusta ei voida kasvattaa esim. jos maailmanraja vasemmalla tai 
+	 * TŠtŠ suurempaa arvoa ei jumpingBonus voi saada
+	 */
+	private final float maxBonus = 700f;
+	
+	/**
+	 * MikŠ on avatarin vaakaliikkeen tila tŠllŠhetkellŠ.
+	 */
+	private MovingStatus movingStatus;
+	
+	/**
+	 * jumpingBonusta ei voida kasvattaa esim. jos maailmanraja vasemmalla tai 
 	 * oikealla estŠŠ liikkumisen. TŠllŠin leansToWall = true
 	 */
 	private boolean leansToWall;
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
-		this.setBasicSpeed(0.5f);
+		//XXX this.setBasicSpeed(0.5f);
 		this.bestHeight = 0;
 		this.onGround = false;
-		this.basicJump = 850f;
+		//XXX this.basicJump = 850f;
 		this.jumpingBonus = 0f;
-		this.maxBonus = 700f;
+		//XXX this.maxBonus = 700f;
 		this.movingStatus = MovingStatus.STATIC;
 		this.leansToWall = false;
 		
@@ -54,13 +63,16 @@ public class Avatar extends GameObject {
 		this.leansToWall = on;
 	}
 	
+	
 	public boolean getLeansToWall(){
 		return this.leansToWall;
 	}
 	
+	
 	public MovingStatus getMovingStatus(){
 		return this.movingStatus;
 	}
+	
 	
 	public void setMovingStatus(MovingStatus status){
 		this.movingStatus = status;
@@ -74,11 +86,12 @@ public class Avatar extends GameObject {
 		this.jumpingBonus = power;
 	}
 	
+	
 	/**
 	 * 
-	 * @param percent kuinka monta prosenttia otetaan pois
+	 * @param percent kuinka monta prosenttia otetaan pois jumpingBonuksesta
 	 */
-	public void decreaseJumpingBonus(float percent){
+	public void decreaseBonusPercent(float percent){
 		float bonus = this.getJumpingBonus();
 		if (percent > 100){
 			percent = 100.0f;
@@ -96,7 +109,7 @@ public class Avatar extends GameObject {
 	 * vahennestaan jumpingBonusta vakiomaara
 	 * @param constant
 	 */
-	public void decreaseJumpingConstant(float constant){
+	public void decreaseBonusConstant(float constant){
 		float bonus = this.getJumpingBonus();
 		bonus -= constant;
 		this.setJumpingBonus(bonus);
@@ -109,10 +122,12 @@ public class Avatar extends GameObject {
 	public float getJumpingPower(){
 		return this.jumpingBonus + this.basicJump;
 	}
-	
+	/*
+	 * XXX
 	public void setBasicSpeed(float s){
 		this.basicSpeed = s;
 	}
+	 */
 	
 	/**
 	 * 
@@ -124,13 +139,15 @@ public class Avatar extends GameObject {
 	
 	public void increaseJumpingBonus(int delta){
 		if (this.leansToWall){
-			
 			return;
 		}
 		
-		this.jumpingBonus += 3*delta/4.6f; //XXX
+		float tuningConstant = 4.6f;
+		
+		this.jumpingBonus += 3*delta/tuningConstant;
+		
 		if (this.jumpingBonus > this.maxBonus/3){
-			this.jumpingBonus +=1*delta/4.6f;//+=2;
+			this.jumpingBonus +=1*delta/tuningConstant;
 		}
 		if (this.getJumpingBonus() > this.maxBonus){
 			this.jumpingBonus = this.maxBonus;
@@ -153,8 +170,8 @@ public class Avatar extends GameObject {
 	}
 	
 	public void changeDirection(MovingStatus newStatus){
-		this.decreaseJumpingBonus(70);
-		this.decreaseJumpingConstant(this.maxBonus/8);
+		this.decreaseBonusPercent(70);
+		this.decreaseBonusConstant(this.maxBonus/8);
 		this.setMovingStatus(newStatus);
 	}
 	

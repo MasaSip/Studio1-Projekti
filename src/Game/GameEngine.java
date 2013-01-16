@@ -170,7 +170,7 @@ public class GameEngine {
 		}
 
 		if (!move || this.avatar.getLeansToWall()){
-			this.avatar.decreaseJumpingConstant(5*delta);
+			this.avatar.decreaseBonusConstant(5*delta);
 		}
 		
 		
