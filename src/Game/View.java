@@ -189,9 +189,9 @@ public class View extends Rectangle {
 		private float lastIncrease = 0.0f;
 		
 		//value taulukon tulee olla yhden pidempi kuin limit taulukko
-		private final float[] value = {0.01f, 0.005f};
+		private final float[] value = {0.008f, 0.005f};
 			//{0.005f, 0.015f, 0.025f,0.015f, 0.01f, 0.005f};
-		private final float[] limit = {0.4f};
+		private final float[] limit = {0.35f};
 			//{0.05f, 0.07f, 0.40f, 0.48f,0.5f};
 		
 		

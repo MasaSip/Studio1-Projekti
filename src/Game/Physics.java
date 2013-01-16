@@ -133,7 +133,7 @@ public class Physics {
 		}
 
 		if (collisionY){
-			this.stopAvatarsMovement();
+			this.stopAvatarsMovement(true);
 			
 		}
 		
@@ -219,7 +219,7 @@ public class Physics {
 				if (collisionTrue){
 					x = collisionX;
 					y = layerY - this.avatar.getHeight();
-					this.stopAvatarsMovement();
+					this.stopAvatarsMovement(false);
 				}
 				
 			}
@@ -262,11 +262,19 @@ public class Physics {
 		}
 		return (x2-x1)/(y2-y1) * (y-y1) + x1;
 	}
-	
-	public void stopAvatarsMovement(){
+	/**
+	 * Pysayttaa avatarin liikkeen.
+	 * @param horizontal true, pysaytetaan vaakaliike. 
+	 * Jos false pysaytetaan pystyliike
+	 */
+	public void stopAvatarsMovement(boolean horizontal){
 		this.velocity.y = 0;
 		this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
 		//lahtemaan vastakkaiseen suuntaan
+		
+		if (horizontal){
+			this.avatar.setMovingStatus(MovingStatus.STATIC);
+		}
 	}
 	
 	/**
