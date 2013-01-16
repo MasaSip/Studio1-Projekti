@@ -171,12 +171,13 @@ public class GameEngine {
 			//if (this.avatar.isOnGround()){				
 							
 			//XXX tänne ehto että eihän paraikaa törmäile seinään
+			
 			this.avatar.increaseJumpingBonus(delta);
 			
 			this.avatar.setMovingStatus(newDirection); //XXX
 			//}
 		}
-		else {
+		if (!move || this.avatar.getLeansToWall()){
 			this.avatar.decreaseJumpingConstant(5*delta);
 		}
 		
