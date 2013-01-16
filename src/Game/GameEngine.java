@@ -113,6 +113,7 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Hoitaa GameEnginessa kaiken mika liittyy avatarin liikutamiseen.
 	 * @param direction Luokassa Input määritelty julkinen vakio
 	 * @param delta kuinka paljon millisekuntteja on kulunut edellisestä
 	 * liikumisesta
@@ -121,28 +122,18 @@ public class GameEngine {
 		MovingStatus state = this.avatar.getMovingStatus();
 		boolean left = input.isKeyDown(Input.KEY_LEFT);
 		boolean right = input.isKeyDown(Input.KEY_RIGHT);
-		boolean spaceDown = input.isKeyDown(Input.KEY_SPACE);
-		//XXX: kannattaa muuttaa physicsia käyttäväksi
+		boolean jump = input.isKeyDown(Input.KEY_SPACE) || 
+			input.isKeyDown(Input.KEY_UP);
+		
 		
 		//mita korkeammalle avatar hyppaisi, sita kovemmin se kipittaa
 		float amount = this.avatar.getSpeed()*delta;
 		boolean move = false;
-		/*
-		 * 
-		
-		if (left){
-			amount = -amount;
-			move = true;
-		}
-		
-		if (right){	
-			move = true;
-		}
-		 */
-		//painetaan pelkastaan vasenta
 		
 		//oletuksena ollaan paikallaan. Jos nuolta painetaan, on syytä liikua.
 		MovingStatus newDirection = MovingStatus.STATIC;
+		
+		//painetaan pelkastaan vasenta
 		if (left && !right){
 			amount = -amount;
 			move = true;
@@ -166,24 +157,25 @@ public class GameEngine {
 		if (move){			
 			
 			this.avatar.move(new Vector2f(amount, 0f));
+			
+			//Maailman scrollaus voi alkaa vasta kun Avataria on liikutettu
 			this.scrollingOn = true;
 			//XXX onko hyva etta bonusta saa myös ilmassa liikkumisesta?
 			//if (this.avatar.isOnGround()){				
-							
-			//XXX tänne ehto että eihän paraikaa törmäile seinään
+			//}
 			
 			this.avatar.increaseJumpingBonus(delta);
 			
 			this.avatar.setMovingStatus(newDirection); //XXX
-			//}
 		}
+
 		if (!move || this.avatar.getLeansToWall()){
 			this.avatar.decreaseJumpingConstant(5*delta);
 		}
 		
-		//tähän asti
 		
-		if (spaceDown && this.avatar.isOnGround()){
+		
+		if (jump && this.avatar.isOnGround()){
 			this.scrollingOn = true;
 			this.physics.jump();
 		}
