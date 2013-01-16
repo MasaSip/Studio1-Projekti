@@ -140,23 +140,27 @@ public class GameEngine {
 		}
 		 */
 		//painetaan pelkastaan vasenta
+		
+		//oletuksena ollaan paikallaan. Jos nuolta painetaan, on syytä liikua.
+		MovingStatus newDirection = MovingStatus.STATIC;
 		if (left && !right){
 			amount = -amount;
 			move = true;
+			newDirection = MovingStatus.LEFT;
 			if (state.equals(MovingStatus.RIGHT)){// && this.avatar.isOnGround()){
-				this.avatar.changeDirection(MovingStatus.LEFT);
+				this.avatar.changeDirection(newDirection);
 				
 			}
-			this.avatar.setMovingStatus(MovingStatus.LEFT); //XXX
 		}
 		//painetaan pelkastaan oikeaa
 		if (!left && right){
 			move = true;
+			newDirection = MovingStatus.RIGHT;
 			if (state.equals(MovingStatus.LEFT)){// && this.avatar.isOnGround()){
-				this.avatar.changeDirection(MovingStatus.RIGHT);		
+				this.avatar.changeDirection(newDirection);		
 				}
 			
-			this.avatar.setMovingStatus(MovingStatus.RIGHT);//XXX
+			//this.avatar.setMovingStatus(MovingStatus.RIGHT);//XXX
 		}
 		
 		if (move){			
@@ -165,11 +169,15 @@ public class GameEngine {
 			this.scrollingOn = true;
 			//XXX onko hyva etta bonusta saa myös ilmassa liikkumisesta?
 			//if (this.avatar.isOnGround()){				
-				this.avatar.increaseJumpingBonus(delta);
+							
+			//XXX tänne ehto että eihän paraikaa törmäile seinään
+			this.avatar.increaseJumpingBonus(delta);
+			
+			this.avatar.setMovingStatus(newDirection); //XXX
 			//}
 		}
 		else {
-			this.avatar.decreaseJumpingConstant(1);
+			this.avatar.decreaseJumpingConstant(5*delta);
 		}
 		
 		//tähän asti
