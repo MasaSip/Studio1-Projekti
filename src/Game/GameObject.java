@@ -12,16 +12,17 @@ import org.newdawn.slick.geom.Vector2f;
 public class GameObject {
 			
 	private Image image;
-	private String imageLocation;
+	private String imageReference;
 	private Vector2f locationAbs;
 	
 	
 	/**
 	 * 
-	 * @param imageLocation lahdetiedoston sijainti
+	 * @param imageReference lahdetiedoston sijainti
 	 */
-	public GameObject(String imageLocation) {
-		this.imageLocation = imageLocation;
+	public GameObject(String imageReference) {
+		this.imageReference = imageReference;
+
 		
 	}
 	
@@ -33,7 +34,7 @@ public class GameObject {
 	
 	/**
 	 * 
-	 * @return kuvakkeen vasen yläkulma
+	 * @return kuvakkeen vasen yläkulma koordinaatistossa, ei näytöllä.
 	 */
 	public Vector2f getLocationAbs(){
 		
@@ -92,7 +93,7 @@ public class GameObject {
 	
 	/**
 	 * 
-	 * @param location mihin halutaan sijoittaa
+	 * Asettaa olion pelimaailman pohjalle
 	 */
 	public void setLocationOnBottom(){
 			
@@ -108,8 +109,9 @@ public class GameObject {
 	}
 	
 	
+	
 	public void loadImage() throws SlickException{
-		this.image = new Image(this.imageLocation);
+		this.image = new Image(this.imageReference);
 	}
 	
 	/**
@@ -118,14 +120,7 @@ public class GameObject {
 	 * alkuperaisiin x ja y koordinaatteihin
 	 */
 	public void move(Vector2f vector){
-		/*
-		 * XXX: turhaa
-		float currentX = this.locationAbs.getX();
-		float currentY = this.locationAbs.getY();
-		float newX = currentX + vector.getX();
-		float newY = currentY + vector.getY();
-		this.locationAbs.set(newX, newY);
-		 */
+		
 		this.locationAbs.add(vector);
 	
 		

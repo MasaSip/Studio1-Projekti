@@ -2,6 +2,7 @@ package game;
 
 import menu.MenuState;
 
+
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -51,7 +52,7 @@ public class Game extends StateBasedGame {
 			app.setShowFPS(false);
 			app.setVSync(true);
 			//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
-			Music music = new Music("data/Cajon_Party.wav");
+			Music music = new Music("data/Cajon_Party.ogg");
 			music.loop(1.0f, 1f);
 			
 			
