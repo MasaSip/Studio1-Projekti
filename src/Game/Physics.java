@@ -136,6 +136,13 @@ public class Physics {
 			this.stopAvatarsMovement(true);
 			
 		}
+		/*
+		 * 
+		jos tormataan maailma sivulaitaan, ei bonaria anneta vaikka 
+		yrittaisikin juosta sita pain. Toisaalta jos x-suunnassa ei tormata,
+		on bonarien kertyminen vähintäänkin luvallista
+		 */
+		this.avatar.setLeansToWall(collisionX);
 		
 		return new Vector2f(x,y);
 
@@ -271,10 +278,12 @@ public class Physics {
 		this.velocity.y = 0;
 		this.acceleration.y = 0; //törmäyksen jalkeen pitää pystya nopeasti
 		//lahtemaan vastakkaiseen suuntaan
-		
+		/*
 		if (horizontal){
 			this.avatar.setMovingStatus(MovingStatus.STATIC);
+			this.avatar.setBonusIncreasingOn(false);
 		}
+		*/ //XXX Pois jos toimii
 	}
 	
 	/**

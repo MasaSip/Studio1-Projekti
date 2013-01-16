@@ -31,6 +31,11 @@ public class Avatar extends GameObject {
 	private float jumpingBonus;
 	private float maxBonus;
 	private MovingStatus movingStatus;
+	/**
+	 * bonusta ei voida kasvattaa esim. jos maailmanraja vasemmalla tai 
+	 * oikealla estŠŠ liikkumisen. TŠllŠin leansToWall = true
+	 */
+	private boolean leansToWall;
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
@@ -41,7 +46,16 @@ public class Avatar extends GameObject {
 		this.jumpingBonus = 0f;
 		this.maxBonus = 700f;
 		this.movingStatus = MovingStatus.STATIC;
+		this.leansToWall = false;
 		
+	}
+	
+	public void setLeansToWall(boolean on){
+		this.leansToWall = on;
+	}
+	
+	public boolean getLeansToWall(){
+		return this.leansToWall;
 	}
 	
 	public MovingStatus getMovingStatus(){
@@ -109,6 +123,10 @@ public class Avatar extends GameObject {
 	}
 	
 	public void increaseJumpingBonus(int delta){
+		if (this.leansToWall){
+			
+			return;
+		}
 		
 		this.jumpingBonus += 3*delta/4.6f; //XXX
 		if (this.jumpingBonus > this.maxBonus/3){
