@@ -4,8 +4,10 @@ import java.awt.Font;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
@@ -34,6 +36,13 @@ public class View extends Rectangle {
 	 * kasvattamatta scrollausnopeutta
 	 */
 	private final float autoScrollLimit = 40;
+	
+	/**
+	 * määrittää rivivälin
+	 */
+	private final float gap = 50.0f;
+	
+	private Image bonusBar;
 	
 	
 	
@@ -138,13 +147,26 @@ public class View extends Rectangle {
 		
 	}
 	
+	
+	public void drawBonusBar(Avatar avatar, Graphics g){
+		
+		//tämänhetkisten bonareitten osuus maximi bonareista
+		float portion = avatar.getBonusPercentage()/100;
+		float full = 300f;
+		
+		this.bonusBar.draw(10, 10 + this.gap, portion*full, this.gap);
+	
+		
+	}
+	
+	
 	public void drawInformation(Avatar avatar, float average, boolean extra){
-		float bonus = avatar.getJumpingBonus();
-		float gap = 50.0f;
+		float bonus = avatar.getBonusPercentage();
 		
-		
+	
 		String txt = "BONARI VOIMAT: ";
 		txt += String.format("%.0f", bonus);
+		txt += " %";
 		scoreFont.drawString(10, 10, txt);
 		
 		if (!extra) return;
@@ -152,16 +174,16 @@ public class View extends Rectangle {
 		String scrl = "Scrollaus Nopeus ";
 		scrl += this.format(2, this.scrollFunction.scrollingSpeed);
 				//String.format("%.2f", this.scrollFunction.scrollingSpeed);
-		scoreFont.drawString(10, 10 +gap, scrl);
+		scoreFont.drawString(10, 10 +2*gap, scrl);
 		
 		String increase = "increase: ";
 		increase += this.format(3, this.scrollFunction.lastIncrease);
 				//String.format("%.3f", this.scrollFunction.lastIncrease);
-		scoreFont.drawString(10, 10 +2*gap, increase);
+		scoreFont.drawString(10, 10 +3*gap, increase);
 		
 		String averg = "average delta: ";
 		averg += this.format(5, average);
-		scoreFont.drawString(10, 10 + 3*gap, averg);
+		scoreFont.drawString(10, 10 + 4*gap, averg);
 		
 		
 	}
@@ -175,6 +197,10 @@ public class View extends Rectangle {
 	public void drawBackground(Graphics g){
 		Color pink = new Color(245, 215, 235);
 		g.setBackground(pink);
+	}
+	
+	public void loadImages() throws SlickException{
+		this.bonusBar = new Image("data/redBar.png");
 	}
 	
 	/**
