@@ -196,7 +196,7 @@ public class GameEngine {
 		
 		
 		
-	
+		this.view.drawBonusBar(this.avatar, g);
 		this.view.drawInformation(this.avatar, this.averageDelta, this.extraInfo);
 	
 		
@@ -320,7 +320,7 @@ public class GameEngine {
 	
 	public void initView() throws SlickException{
 		this.view.initFont();
-		
+		this.view.loadImages();
 	}
 	/**
 	 * 

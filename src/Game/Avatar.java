@@ -62,6 +62,14 @@ public class Avatar extends GameObject {
 		
 	}
 	
+	/**
+	 * 
+	 * @return kuinka monta % nykyinen jumpingBonus on maksimista
+	 */
+	public float getBonusPercentage(){
+		return this.getJumpingBonus()/this.maxBonus*100;
+	}
+	
 	public void setLeansToWall(boolean on){
 		this.leansToWall = on;
 	}
