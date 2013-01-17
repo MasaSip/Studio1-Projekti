@@ -57,8 +57,11 @@ public class GamePlayState extends BasicGameState {
 	 */
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		this.gameEngine.loadImages();
+		
+		//XXX nŠŠ kolme vois olla init GameObjects
 		this.gameEngine.putAvatarIntoGame();
 		this.gameEngine.putBottomLayerIntoGame();
+		this.gameEngine.putAvatarAboveBottomLayer();//tŠŠ vois ottaa parametrina BottomLayerin
 		
 		this.gameEngine.initView();
 

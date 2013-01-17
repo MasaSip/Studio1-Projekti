@@ -87,9 +87,11 @@ public class GameEngine {
 	
 	public void putBottomLayerIntoGame(){
 		this.bottomLayer.setLocationOnBottom();
+	}
+	
+	public void putAvatarAboveBottomLayer(){
+		
 		this.avatar.move(new Vector2f(0,-this.bottomLayer.getHeight()));
-		
-		
 	}
 	
 	/**
@@ -101,13 +103,9 @@ public class GameEngine {
 	}
 	
 	public void putAvatarIntoGame() throws SlickException{
-		
+
 	
-		float Xabs = (Game.WIDTH - avatar.getWidth())/2;
-		float Yabs = Game.HEIGHT - avatar.getHeight();
-		//Yabs +=
-	
-		this.avatar.setLocation(new Vector2f(Xabs, Yabs));
+		this.avatar.setLocationOnBottom();
 		this.avatar.setOnGround(true);
 		
 	}
