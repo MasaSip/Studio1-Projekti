@@ -129,7 +129,8 @@ public class View extends Rectangle {
 	
 	public void drawScore(int score, Graphics g){
 		g.setColor(this.scoreColor);
-		String scoreTxt = "PARAS KORKEUS \n" +  Integer.toString(score);
+		String scoreTxt = 
+				"PARAS KORKEUS \n" + Integer.toString(score);
 		
 		this.scoreFont.drawString(Game.WIDTH - 490 , 30, scoreTxt);
 		
@@ -164,7 +165,7 @@ public class View extends Rectangle {
 		float bonus = avatar.getBonusPercentage();
 		
 	
-		String txt = "BONARI VOIMAT: ";
+		String txt = "BONARIVOIMAT: ";
 		txt += String.format("%.0f", bonus);
 		txt += " %";
 		scoreFont.drawString(10, 10, txt);
@@ -216,9 +217,9 @@ public class View extends Rectangle {
 		
 		//value taulukon tulee olla yhden pidempi kuin limit taulukko
 		private final float[] value = {0.008f, 0.005f};
-			//{0.005f, 0.015f, 0.025f,0.015f, 0.01f, 0.005f};
+			
 		private final float[] limit = {0.35f};
-			//{0.05f, 0.07f, 0.40f, 0.48f,0.5f};
+		
 		
 		
 		

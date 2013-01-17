@@ -2,8 +2,6 @@ package game;
 
 import menu.MenuState;
 
-
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Music;
@@ -20,7 +18,7 @@ public class Game extends StateBasedGame {
 	public static final float HEIGHT = 750;
 	
 	public Game() {
-		super("Tyttelö Peli");
+		super("Hämiksen Päiväunet");
 	}
 
 	@Override
