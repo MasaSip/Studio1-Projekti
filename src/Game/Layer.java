@@ -12,7 +12,8 @@ public class Layer extends GameObject {
 	 * Kuinka paljon kuvakkeen ylälaidasta on tyhjää tilaa, johon ei voi 
 	 * törmätä?
 	 */
-	private float freeSpace = 10;
+	private float freeSpaceY = 10;
+	private float freeSpaceX = 60;
 	
 	public Layer(String imageReference) {
 		super(imageReference);
@@ -27,9 +28,14 @@ public class Layer extends GameObject {
 		Vector2f startPoint = this.getLeftTop().copy();
 		Vector2f endPoint = this.getRightTop().copy();
 		
-		startPoint.y += this.freeSpace;
-		endPoint.y += this.freeSpace;
+		startPoint.y += this.freeSpaceY;
+		endPoint.y += this.freeSpaceY;
+		
+		startPoint.x += this.freeSpaceX;
+		endPoint.x -= this.freeSpaceX;
+		
 		Line collisionLine = new Line(startPoint, endPoint);
+		
 		
 		
 		return collisionLine;

@@ -1,5 +1,6 @@
 package game;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Avatar extends GameObject {
@@ -45,6 +46,8 @@ public class Avatar extends GameObject {
 	 * oikealla estää liikkumisen. Tälläin leansToWall = true
 	 */
 	private boolean leansToWall;
+	
+	private Image flyingLeft;
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
@@ -180,6 +183,24 @@ public class Avatar extends GameObject {
 		}
 		
 		this.setMovingStatus(newStatus);
+	}
+	
+	@Override
+	public void loadImage() throws SlickException{
+		this.flyingLeft = new Image("data/HamisVasemmalle.png");
+		super.loadImage();
+		
+	}
+	
+	@Override
+	public Image getImage(){
+		boolean left = this.getMovingStatus().equals(MovingStatus.LEFT);
+		boolean onTheAir = !this.isOnGround();
+		if (onTheAir){
+			if (left) return this.flyingLeft;
+			return this.flyingLeft.getFlippedCopy(true, false);
+		}
+		return super.getImage();
 	}
 	
 	
