@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author Masa
+ * Tama paketti vastaa pelin alkuvalikosta.
  *
  */
 package menu;

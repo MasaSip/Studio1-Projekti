@@ -74,7 +74,11 @@ public class MenuState extends BasicGameState {
 			throws SlickException {
 		Input input = container.getInput();
 		
-		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+		boolean mouseLeft = input.isMousePressed(Input.MOUSE_LEFT_BUTTON);
+		boolean mouseRight = input.isMousePressed(Input.MOUSE_RIGHT_BUTTON);
+		boolean enter = input.isKeyPressed(Input.KEY_ENTER);
+		
+		if (mouseLeft || mouseRight || enter){
 			this.enterState(game, Game.GAMEPLAYSTATE);
 		}
 		
