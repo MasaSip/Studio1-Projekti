@@ -29,7 +29,7 @@ public class GamePlayState extends BasicGameState {
 	
 	
 	public GamePlayState(int stateID) throws SlickException{
-		this.gameEngine = new GameEngine(this);
+		this.gameEngine = new GameEngine();
 		this.stateID = stateID;
 	}
 
@@ -55,15 +55,21 @@ public class GamePlayState extends BasicGameState {
 	 * suoritetaan ennen game-loopin kaynnistymista.
 	 */
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		this.gameEngine.loadImages();
 		
+		long initStart = System.currentTimeMillis();
+		this.gameEngine.loadImages();
 		
 		this.gameEngine.putAvatarIntoGame();
 		this.gameEngine.putBottomLayerIntoGame();
 		this.gameEngine.putAvatarAboveBottomLayer();
 		
 		this.gameEngine.initView();
-
+		
+		long initEnd = System.currentTimeMillis();
+		long initializingTime = initEnd - initStart;
+		
+		System.out.println("GamePlayState:n init-metodin suoritus kesti " + 
+		initializingTime + " millisekunttia");
 		
 		
 	}
@@ -88,6 +94,7 @@ public class GamePlayState extends BasicGameState {
 		this.gameEngine.updateScore();
 		
 		this.gameEngine.update(input, delta);
+		this.gameEngine.updateAverageDelta(delta);
 		
 		
 		
@@ -101,7 +108,7 @@ public class GamePlayState extends BasicGameState {
 		MenuState state = (MenuState) game.getState(Game.MENUSTATE);
 		state.addScore(score);
 		state.updateMenuText();
-		this.gameEngine = new GameEngine(this);
+		this.gameEngine = new GameEngine();
 		this.init(gc, game);
 		this.enterState(game, Game.MENUSTATE);
 		

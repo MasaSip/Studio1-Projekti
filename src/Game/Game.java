@@ -23,6 +23,7 @@ public class Game extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
+		
 		//StateBasedGame käy kutsumassa näiden init-metodia
 		this.addState(new GamePlayState(GAMEPLAYSTATE));
 		this.addState(new MenuState(MENUSTATE));
@@ -52,11 +53,9 @@ public class Game extends StateBasedGame {
 		//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
 		Music music = new Music("data/Cajon_Party.ogg");
 		music.loop(1.0f, 1f);
-
-
-
+		
 		app.start();
-
+	
 		}
 
 }
