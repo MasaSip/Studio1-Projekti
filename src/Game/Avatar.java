@@ -37,7 +37,7 @@ public class Avatar extends GameObject {
 	private final float maxBonus = 700f;
 	
 	/**
-	 * Mikä on avatarin vaakaliikkeen tila tällähetkellä.
+	 * Liikkuiko avatar viimeksi vasemmalle vai oikealle.
 	 */
 	private MovingStatus movingStatus;
 	

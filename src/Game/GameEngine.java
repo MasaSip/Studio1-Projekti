@@ -110,78 +110,87 @@ public class GameEngine {
 		
 	}
 	
+	
 	/**
-	 * Hoitaa GameEnginessa kaiken mika liittyy avatarin liikutamiseen.
-	 * @param direction Luokassa Input määritelty julkinen vakio
-	 * @param delta kuinka paljon millisekuntteja on kulunut edellisestä
-	 * liikumisesta
+	 * Kaikki inputin kasittely tapahtuu taalla. Lahettaa komentoja eteenpain
+	 * @param input
+	 * @param delta viive
 	 */
-	public void moveAvatar(Input input, int delta){
-		MovingStatus state = this.avatar.getMovingStatus();
+	public void update(Input input, int delta){
+		MovingStatus newStatus = MovingStatus.STATIC;
 		boolean left = input.isKeyDown(Input.KEY_LEFT);
 		boolean right = input.isKeyDown(Input.KEY_RIGHT);
 		boolean jump = input.isKeyDown(Input.KEY_SPACE) || 
-			input.isKeyDown(Input.KEY_UP);
-		
-		
-		//mita korkeammalle avatar hyppaisi, sita kovemmin se kipittaa
-		float amount = this.avatar.getSpeed()*delta;
-		boolean move = false;
-		
-		//oletuksena ollaan paikallaan. Jos nuolta painetaan, on syytä liikua.
-		MovingStatus newDirection = MovingStatus.STATIC;
-		
-		//painetaan pelkastaan vasenta
-		if (left && !right){
-			amount = -amount;
-			move = true;
-			newDirection = MovingStatus.LEFT;
-			if (state.equals(MovingStatus.RIGHT)){// && this.avatar.isOnGround()){
-				this.avatar.changeDirection(newDirection);
-				
-			}
-		}
-		//painetaan pelkastaan oikeaa
-		if (!left && right){
-			move = true;
-			newDirection = MovingStatus.RIGHT;
-			if (state.equals(MovingStatus.LEFT)){// && this.avatar.isOnGround()){
-				this.avatar.changeDirection(newDirection);		
-				}
-			
-			//this.avatar.setMovingStatus(MovingStatus.RIGHT);//XXX
-		}
-		
-		if (move){			
-			
-			this.avatar.move(new Vector2f(amount, 0f));
-			
-			//Maailman scrollaus voi alkaa vasta kun Avataria on liikutettu
-			this.scrollingOn = true;
-			//XXX onko hyva etta bonusta saa myös ilmassa liikkumisesta?
-			//if (this.avatar.isOnGround()){				
-			//}
-			
-			this.avatar.increaseJumpingBonus(delta);
-			
-			this.avatar.setMovingStatus(newDirection); //XXX
-		}
+				input.isKeyDown(Input.KEY_UP);
+		boolean onGround = this.avatar.isOnGround();
 
-		if (!move || this.avatar.getLeansToWall()){
-			this.avatar.decreaseBonusConstant(5*delta);
-		}
-		
-		
-		
-		if (jump && this.avatar.isOnGround()){
+		this.updateAverageDelta(delta);
+
+
+		if (jump && onGround){
 			this.scrollingOn = true;
 			this.physics.jump();
 		}
-		
-		this.physics.moveAvatar();
-		
-		
+
+		if (input.isKeyPressed(Input.KEY_E)){
+			this.extraInfo = !this.extraInfo;
+		}
+
+		if (left && !right){
+			newStatus = MovingStatus.LEFT;
+		}
+		if (!left && right){
+			newStatus = MovingStatus.RIGHT;
+		}
+
+
+
+		this.moveAvatar(newStatus, delta);
+
+
 	}
+	/**
+	 * kopeloi avatarin MovinStatusta ja jumpinBonusta. Valittaa hyppykasky
+	 * physicsille
+	 * @param newStatus
+	 * @param delta
+	 */
+	public void moveAvatar(MovingStatus newStatus, int delta){
+
+		boolean leansToWall = this.avatar.getLeansToWall();
+		float amount = this.avatar.getSpeed()*delta;
+		MovingStatus oldStatus = this.avatar.getMovingStatus();
+		//jos ei liiku, taman verran otetaan movingStatusta pois
+		float decreaseAmount = 5*delta;
+
+		this.physics.moveAvatar();
+
+		if (leansToWall){
+			this.avatar.decreaseBonusConstant(decreaseAmount);
+		}
+
+		if (newStatus.equals(MovingStatus.STATIC)){
+			this.avatar.decreaseBonusConstant(decreaseAmount);
+			return;
+		}
+
+		this.avatar.increaseJumpingBonus(delta);
+
+		if (newStatus.equals(MovingStatus.LEFT)){
+			amount = -amount;
+		}
+
+		if (oldStatus.isOppositeTo(newStatus)){
+			this.avatar.changeDirection(newStatus);	
+		}
+		this.avatar.setMovingStatus(newStatus);
+
+		this.avatar.move(new Vector2f(amount, 0f));
+
+	}
+
+		
+		
 	
 	public void drawGame(Graphics g){
 		for (Layer o : this.layers){
@@ -242,20 +251,20 @@ public class GameEngine {
 			this.generateLayers();
 		}
 	}
-	
+	/*
 	/**
 	 * paivitetaan GameEnginen tietoja esim. naytetaanko ylimaaraisia tietoja
 	 * vai ei
 	 * @param input
 	 * @param delta
-	 */
+	 *
 	public void update(Input input, int delta){
 		this.updateAverageDelta(delta);
 		if (input.isKeyPressed(Input.KEY_E)){
 			this.extraInfo = !this.extraInfo;
 		}
 	}
-	
+	*/
 	public void updatePhysics(int delta){
 		this.physics.update(this.layers, delta);
 	}

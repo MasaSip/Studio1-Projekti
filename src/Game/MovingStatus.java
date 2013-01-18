@@ -8,4 +8,21 @@ package game;
  */
 public enum MovingStatus {
 	LEFT, STATIC, RIGHT;
+	
+	
+	/**
+	 * vasemman vastakohta on oikea. Oikean vasen, ja staticin static
+	 * @param status
+	 * @return vastakohta
+	 */
+	public boolean isOppositeTo(MovingStatus status){
+		
+		if (this.equals(MovingStatus.STATIC)) return false;
+		
+		if (status.equals(MovingStatus.STATIC)) return false;
+		
+		if (this.equals(status)) return false;
+		
+		return true;
+	}
 }

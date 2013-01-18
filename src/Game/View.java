@@ -185,6 +185,9 @@ public class View extends Rectangle {
 		averg += this.format(5, average);
 		scoreFont.drawString(10, 10 + 4*gap, averg);
 		
+		String status = "MovingStatus: " +  avatar.getMovingStatus().toString();
+		scoreFont.drawString(10, 10 + 5*gap, status);
+		
 		
 	}
 	
