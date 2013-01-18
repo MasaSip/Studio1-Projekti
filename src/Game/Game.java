@@ -32,31 +32,31 @@ public class Game extends StateBasedGame {
 			throws SlickException
 		{	
 
-			Game game = new Game();
-			AppGameContainer app = new AppGameContainer(game);
+		Game game = new Game();
+		AppGameContainer app = new AppGameContainer(game);
 
-			app.setDisplayMode(
-					/*
-					 * 
+		app.setDisplayMode(
+				/*
+				 * 
 					800,
 					600, 
 					true)
-					 */
-			(int)Game.WIDTH,
-			(int) Game.HEIGHT, 
-			false);
-			
-			app.setTargetFrameRate(50);
-			app.setShowFPS(false);
-			app.setVSync(true);
-			//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
-			Music music = new Music("data/Cajon_Party.ogg");
-			music.loop(1.0f, 1f);
-			
-			
-			
-			app.start();
-			
+				 */
+				(int)Game.WIDTH,
+				(int) Game.HEIGHT, 
+				false);
+
+		app.setTargetFrameRate(50);
+		app.setShowFPS(false);
+		app.setVSync(true);
+		//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
+		Music music = new Music("data/Cajon_Party.ogg");
+		music.loop(1.0f, 1f);
+
+
+
+		app.start();
+
 		}
 
 }
