@@ -26,6 +26,7 @@ public class MenuState extends BasicGameState {
 	private int stateID;
 	
 	private List<Integer>lastScores;
+	
 	//kuinka monta tulosta naytetaan enimmillaan yhta aikaa
 	private final int scoresMax = 5;
 	
@@ -38,6 +39,7 @@ public class MenuState extends BasicGameState {
 		this.stateID = stateID;
 		this.menuText = "Paina mua, jos mielit pelata";
 		this.lastScores = new ArrayList<Integer>();
+		
 	}
 
 	@Override

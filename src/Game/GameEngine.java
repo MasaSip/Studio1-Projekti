@@ -37,7 +37,6 @@ public class GameEngine {
 	 */
 	private Boolean extraInfo;
 	
-	private GamePlayState game;
 	
 	private final float DISTANCEBETWEENLAYERS = 100;
 	/**
@@ -45,9 +44,8 @@ public class GameEngine {
 	 */
 	private int score;
 	
-	public GameEngine(GamePlayState game) throws SlickException {
-		this.deltas = new ArrayList();
-		this.game = game;
+	public GameEngine() throws SlickException {
+		this.deltas = new ArrayList<Integer>();
 		this.rnd = new Random();
 		this.layers = new ArrayList<Layer>();
 		Layer bottomLayer = new Layer("data/BottomLayer.png");
@@ -123,8 +121,6 @@ public class GameEngine {
 		boolean jump = input.isKeyDown(Input.KEY_SPACE) || 
 				input.isKeyDown(Input.KEY_UP);
 		boolean onGround = this.avatar.isOnGround();
-
-		this.updateAverageDelta(delta);
 
 
 		if (jump && onGround){
