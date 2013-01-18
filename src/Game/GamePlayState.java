@@ -57,10 +57,10 @@ public class GamePlayState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		this.gameEngine.loadImages();
 		
-		//XXX nŠŠ kolme vois olla init GameObjects
+		
 		this.gameEngine.putAvatarIntoGame();
 		this.gameEngine.putBottomLayerIntoGame();
-		this.gameEngine.putAvatarAboveBottomLayer();//tŠŠ vois ottaa parametrina BottomLayerin
+		this.gameEngine.putAvatarAboveBottomLayer();
 		
 		this.gameEngine.initView();
 
@@ -82,7 +82,6 @@ public class GamePlayState extends BasicGameState {
 		this.gameEngine.scrollView(delta);
 		this.gameEngine.generateLayers();
 				
-		this.gameEngine.moveAvatar(input, delta);
 		if (this.gameEngine.gameOver()){
 			this.gameOver(gc, game);
 		}
