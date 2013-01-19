@@ -87,9 +87,13 @@ public class GameEngine {
 		this.bottomLayer.setLocationOnBottom();
 	}
 	
+	
+	/**
+	 * Avatar asetetaan alimman laatan paalle.
+	 */
 	public void putAvatarAboveBottomLayer(){
-		
-		this.avatar.move(new Vector2f(0,-this.bottomLayer.getHeight()));
+		float y = this.bottomLayer.getCollisionLine().getMinY();
+		this.avatar.getLocationAbs().y = y - this.avatar.getHeight();
 	}
 	
 	/**
@@ -247,20 +251,11 @@ public class GameEngine {
 			this.generateLayers();
 		}
 	}
-	/*
+	
 	/**
-	 * paivitetaan GameEnginen tietoja esim. naytetaanko ylimaaraisia tietoja
-	 * vai ei
-	 * @param input
-	 * @param delta
-	 *
-	public void update(Input input, int delta){
-		this.updateAverageDelta(delta);
-		if (input.isKeyPressed(Input.KEY_E)){
-			this.extraInfo = !this.extraInfo;
-		}
-	}
-	*/
+	 * Kerto Physics -oliolle päivitysviiveen ja pelimaailmassa olevat tasot.
+	 * @param delta viive edellisestä päivityksestä millisekuntteina
+	 */
 	public void updatePhysics(int delta){
 		this.physics.update(this.layers, delta);
 	}
@@ -304,7 +299,14 @@ public class GameEngine {
 		while (this.objectIsHigherThan(topYOnScreen, limit, o)){
 			
 			this.view.scroll(delta, false);
-			limit = limit*1.2f;
+			
+			// if -else rakenteen luvut ovat mielivaltaisesti valittuja.
+			if (limit < 10){
+				limit += 20;
+			}
+			else {				
+				limit = limit*1.2f;
+			}
 		}
 		
 	}
@@ -335,11 +337,6 @@ public class GameEngine {
 	public boolean objectIsHigherThan(float y, float percent, GameObject o){
 		float oHeight = o.getHeight();
 		float objectY = o.getTopY();
-		
-		//o on kokonaan rajan alapuolella
-		if (objectY > y){
-			return false;
-		}
 		
 		float percentAtm = (y - objectY)/oHeight*100;
 		if (percent <= percentAtm){

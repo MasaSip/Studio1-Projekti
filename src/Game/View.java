@@ -31,10 +31,10 @@ public class View extends Rectangle {
 	private ScrollFunction scrollFunction;
 	
 	/**
-	 * jos autoScrollLimit % Avatrista on ruudun ylapuolella, scrollataan ruutua ylospain
-	 * kasvattamatta scrollausnopeutta
+	 * jos autoScrollLimit % Avatrista on ruudun ylapuolella, scrollataan 
+	 * ruutua ylospain kasvattamatta scrollausnopeutta
 	 */
-	private final float autoScrollLimit = 40;
+	private final float autoScrollLimit = -10;
 	
 	/**
 	 * määrittää rivivälin
@@ -171,21 +171,22 @@ public class View extends Rectangle {
 		
 		if (!extra) return;
 		
-		String scrl = "Scrollaus Nopeus ";
+		String scrl = "Scrollaus nopeus ";
 		scrl += this.format(2, this.scrollFunction.scrollingSpeed);
 				//String.format("%.2f", this.scrollFunction.scrollingSpeed);
 		scoreFont.drawString(10, 10 +2*gap, scrl);
 		
-		String increase = "increase: ";
+		String increase = "kiihtyvyys: ";
 		increase += this.format(3, this.scrollFunction.lastIncrease);
 				//String.format("%.3f", this.scrollFunction.lastIncrease);
 		scoreFont.drawString(10, 10 +3*gap, increase);
 		
-		String averg = "average delta: ";
-		averg += this.format(5, average);
+		String averg = "Viive keskimäärin (ms): ";
+		averg += this.format(3, average);
 		scoreFont.drawString(10, 10 + 4*gap, averg);
 		
-		String status = "MovingStatus: " +  avatar.getMovingStatus().toString();
+		String status = "Viimeisin liikesuunta: " +  
+				avatar.getMovingStatus().toString();
 		scoreFont.drawString(10, 10 + 5*gap, status);
 		
 		
