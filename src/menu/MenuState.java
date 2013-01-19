@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -31,7 +33,8 @@ public class MenuState extends BasicGameState {
 	private final int scoresMax = 5;
 	
 	private String menuText;
-	private UnicodeFont font;
+	private UnicodeFont menuFont;
+	private UnicodeFont creditsFont;
 	private Image background;
 	
 	
@@ -53,19 +56,29 @@ public class MenuState extends BasicGameState {
 	
 	public void initFont(int size) throws SlickException{
 		Font awtFont = new Font("Chalkduster", Font.BOLD, size);
-		this.font = new UnicodeFont(awtFont);
-		this.font.addAsciiGlyphs();
+		this.menuFont = new UnicodeFont(awtFont);
+		this.menuFont.addAsciiGlyphs();
 		java.awt.Color menuColor = new java.awt.Color(225, 0, 0);
-		ColorEffect red = new ColorEffect(menuColor);//new Color(159, 0, 0));//java.awt.Color.red);
-		this.font.getEffects().add(red);
-		this.font.loadGlyphs();
+		ColorEffect red = new ColorEffect(menuColor);
+		this.menuFont.getEffects().add(red);
+		this.menuFont.loadGlyphs();
+		
+		Font creditsAwt = new Font("Tahoma",Font.BOLD, 18);
+		this.creditsFont = new UnicodeFont(creditsAwt);
+		this.creditsFont.addAsciiGlyphs();
+		java.awt.Color creditsColor = new java.awt.Color(53, 189, 216);
+		ColorEffect effect = new ColorEffect(creditsColor);
+		this.creditsFont.getEffects().add(effect);
+		this.creditsFont.loadGlyphs();
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		this.showLastScores(g, new Point(800,40));
-		this.font.drawString(200, Game.HEIGHT - 400, this.menuText);
+		this.menuFont.drawString(200, Game.HEIGHT - 400, this.menuText);
+		this.drawCredits(g);
+		
 		g.setBackground(Color.white);
 		g.drawImage(this.background, 10, 10);
 		
@@ -121,7 +134,7 @@ public class MenuState extends BasicGameState {
 			return;
 		}
 		
-		font.drawString(X, Y, "NŠin korkealle olet kivunnut");
+		menuFont.drawString(X, Y, "NŠin korkealle olet kivunnut");
 		
 		for (int i = scores-1; i >= 0 && scoresShown < this.scoresMax; i--){
 		
@@ -129,7 +142,7 @@ public class MenuState extends BasicGameState {
 			float x = X + 20;
 			float y = Y + (scoresShown+1.0f) * distBetweenLines;
 			String scoreTxt = Integer.toString(this.lastScores.get(i));
-			font.drawString(x, y, scoreTxt);
+			menuFont.drawString(x, y, scoreTxt);
 			scoresShown++;
 		}
 	}
@@ -137,5 +150,17 @@ public class MenuState extends BasicGameState {
 	public void updateMenuText(){
 		this.menuText = "Pikku torkut tŠhŠn vŠliin. HerŠtŠ, jos haluut uusiks!";
 	}
+	
+	public void drawCredits(Graphics g){
+		int lineHeight = this.creditsFont.getLineHeight();
+		float y = Game.HEIGHT -lineHeight*1.2f;
+		float x = Game.WIDTH -930f;
+		String credits = "OHJELMOINTI: Matti Sippola, " +
+				"GRAFIIKKA: Sonja Kiiveri, " +
+				"MUSIIKKI: Aapo Haapasalo ja Nora Bergman";
+	
+		this.creditsFont.drawString(x, y, credits);
+	}
+	
 
 }

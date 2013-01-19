@@ -25,4 +25,15 @@ public enum MovingStatus {
 		
 		return true;
 	}
+	
+	@Override
+	public String toString(){
+		switch (this){
+		case LEFT : return "vasen"; 
+		case RIGHT : return "oikea";
+		default : return "ei liikettŠ";
+				
+		}
+		
+	}
 }
