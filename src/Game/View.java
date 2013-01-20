@@ -41,6 +41,9 @@ public class View extends Rectangle {
 	 */
 	private final float gap = 50.0f;
 	
+	/**
+	 * bonarivoimapalkki piirretaan talla kuvalla.
+	 */
 	private Image bonusBar;
 	
 	
@@ -48,12 +51,12 @@ public class View extends Rectangle {
 	public View() throws SlickException {
 		super(0, 0, Game.WIDTH, Game.HEIGHT);
 		this.scrollFunction = new ScrollFunction();
-		this.scoreColor = Color.red;//new Color(210, 50, 40, 255);
+		this.scoreColor = Color.red;
 		
 		Font awtFont = new Font("Chalkduster", Font.BOLD, 36);
 
 		this.scoreFont = new UnicodeFont(awtFont);
-			//new UnicodeFont(Font.decode("Comic Sans MS"), 40, false, false);
+			
 		
 	}
 	
@@ -72,25 +75,32 @@ public class View extends Rectangle {
 	public void draw(GameObject o, Graphics g, boolean extraInfo){
 		Vector2f location = this.getLocationOnScreen(o.getLocationAbs());
 		o.getImage().draw(location.getX(), location.getY());
+		
 		if (extraInfo && o instanceof Layer){
 			Layer l = (Layer) o;
 			Line collisionLine = l.getCollisionLine();
+			
 			Vector2f startAbs = collisionLine.getStart();
 			Vector2f endAbs = collisionLine.getEnd();
 			Vector2f start = this.getLocationOnScreen(startAbs);
 			Vector2f end = this.getLocationOnScreen(endAbs);
+			
 			g.setColor(Color.magenta);
 			g.drawLine(start.getX(), start.getY(), end.getX(), end.getY());
 			
 		}
 	}
 	
+	/**
+	 * 
+	 * @param abs sijainti absoluuttisessa koordinaatistossa.
+	 * @return Sijainti naytolla
+	 */
 	public Vector2f getLocationOnScreen(Vector2f abs){
 		float X = abs.getX();
 		float Y = abs.getY();
 		
 		float viewScrolled = this.getScrolledDistance();
-	
 		
 		float YonScreen = Y + viewScrolled;
 		

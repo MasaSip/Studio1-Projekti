@@ -20,7 +20,7 @@ public class Physics {
 	private Vector2f velocity;
 	private Vector2f acceleration;
 	/**
-	 * vähintään tän verran Avatarin leveydesta nakyy kokoajan. Sivuttais 
+	 * vähintään tän verran % Avatarin leveydesta nakyy kokoajan. Sivuttais 
 	 * tormays tapahtuu vasta ruudun ulkopuolella.
 	 */
 	private final float minVisible = 40;
@@ -39,14 +39,19 @@ public class Physics {
 		this.acceleration = new Vector2f(0, Physics.gravity);
 	}
 	
-	
+	/**
+	 * Paivittaa Physics olion -tiedot
+	 * @param layers
+	 * @param delta
+	 */
 	public void update(List<Layer> layers, int delta){
 		this.delta = delta;
 		this.layers = layers;
 	}
 	
 	/**
-	 * jos avatar on maassa, avatar hyppaa
+	 * jos avatar on maassa, avatar hyppaa. Hyppy muuttaa velocity -attribuutin
+	 * arvoa. 
 	 */
 	public void jump(){
 		
@@ -58,6 +63,9 @@ public class Physics {
 		}
 	}
 	
+	/**
+	 * Yrittaa liikuttaa Avataria velocity -attribuutin mukaan.
+	 */
 	public void moveAvatar(){
 		this.acceleration.y = Physics.gravity;
 		
@@ -95,7 +103,8 @@ public class Physics {
 	}	
 	
 	/**
-	 * tormaustarkistus ikkunan reunojen kanssa.
+	 * tormaustarkistus ikkunan reunojen kanssa. minVisible maarittaa
+	 * kuinka paljon enintaa
 	 * @param o kenen tormaysta tarkistetaan
 	 * @param to mihin yritetaan menna
 	 */
@@ -148,7 +157,13 @@ public class Physics {
 
 	}
 	
-	
+	/**
+	 * Tarkistaa Avatarin tormaamisen tasojen kanssa. Tormays voi tapahtua
+	 * vain jos Avatar putoaa. Pysayttaa liikkeen, jos tormays tapahtuu. 
+	 * Palauttaa sijainnin, johon Avatar paatyy tormaystarkistuksen jalkeen.
+	 * @param to mihin yritetaan menna
+	 * @return
+	 */
 	public Vector2f collisionWithLayers(Vector2f to){
 		Vector2f from = this.avatar.getLeftTop();
 		Vector2f leftBottom = this.avatar.getLeftBottom();
@@ -181,10 +196,9 @@ public class Physics {
 			return to;
 			
 		}
+	
 		
-		//ollaan menossa alapain
-		
-		
+		//Nyt tiedetaan että Avatar liikkuu alaspain.
 		
 		
 		for (Layer layer : this.layers){

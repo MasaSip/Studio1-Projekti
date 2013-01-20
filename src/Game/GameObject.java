@@ -47,6 +47,7 @@ public class GameObject {
 	public float getTopY(){
 		return this.getLocationAbs().getY();
 	}
+	
 	/**
 	 * 
 	 * @return kuvan korkeus
@@ -58,6 +59,7 @@ public class GameObject {
 	public float getWidth(){
 		return (float) this.image.getWidth();
 	}
+	
 	/**
 	 * 
 	 * @return Kuvakkeen vasen ylakulma
