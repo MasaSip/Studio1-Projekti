@@ -12,12 +12,12 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 
-/**
-* Pelin kuvat ovat Sonja Kiiverin piirtamia. Musiikkin ovat tehneet 
-* Nora Bergman ja Aapo Haapasalo.
-* 
-*/
 
+/**
+ * Pelinakyman GameLoop pyorii taalla.
+ * 
+ *
+ */
 public class GamePlayState extends BasicGameState {
 	
 	private int stateID;

@@ -47,16 +47,19 @@ public class Avatar extends GameObject {
 	 */
 	private boolean leansToWall;
 	
+	/**
+	 * Tata kuvaa kaytetaan kun Hamis lentaa vasemmalle. Tama kaannetaan ymapari
+	 * kun lennetaan oikealle
+	 */
 	private Image flyingLeft;
+	
 	
 	public Avatar() throws SlickException {
 		super("data/Hamis.png");
-		//XXX this.setBasicSpeed(0.5f);
+		
 		this.bestHeight = 0;
 		this.onGround = false;
-		//XXX this.basicJump = 850f;
 		this.jumpingBonus = 0f;
-		//XXX this.maxBonus = 700f;
 		this.movingStatus = MovingStatus.STATIC;
 		this.leansToWall = false;
 		
@@ -133,12 +136,7 @@ public class Avatar extends GameObject {
 	public float getJumpingPower(){
 		return this.jumpingBonus + this.basicJump;
 	}
-	/*
-	 * XXX
-	public void setBasicSpeed(float s){
-		this.basicSpeed = s;
-	}
-	 */
+	
 	
 	/**
 	 * 
@@ -148,6 +146,10 @@ public class Avatar extends GameObject {
 		return this.basicSpeed + 1.2f*this.getJumpingBonus()/1000;
 	}
 	
+	/**
+	 * Kasvattaa bonarivoimia
+	 * @param delta viive
+	 */
 	public void increaseJumpingBonus(int delta){
 		if (this.leansToWall){
 			return;

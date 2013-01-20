@@ -23,6 +23,11 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 
+/**
+ * Tama luokka vastaa aloitusnakymasta.
+ * 
+ *
+ */
 public class MenuState extends BasicGameState {
 
 	private int stateID;
@@ -44,7 +49,10 @@ public class MenuState extends BasicGameState {
 		this.lastScores = new ArrayList<Integer>();
 		
 	}
-
+	
+	/**
+	 * Suoritetaan ennen GameLooppia.
+	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -53,7 +61,11 @@ public class MenuState extends BasicGameState {
 		
 		
 	}
-	
+	/**
+	 * Ladataan fontit
+	 * @param size mita kokoa kaytetaan.
+	 * @throws SlickException
+	 */
 	public void initFont(int size) throws SlickException{
 		Font awtFont = new Font("Chalkduster", Font.BOLD, size);
 		this.menuFont = new UnicodeFont(awtFont);
@@ -72,6 +84,9 @@ public class MenuState extends BasicGameState {
 		this.creditsFont.loadGlyphs();
 	}
 
+	/**
+	 * Pirretaan ruudulle.
+	 */
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
@@ -83,7 +98,10 @@ public class MenuState extends BasicGameState {
 		g.drawImage(this.background, 10, 10);
 		
 	}
-
+	
+	/**
+	 * Paivitetaan logiikka.
+	 */
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
@@ -147,9 +165,13 @@ public class MenuState extends BasicGameState {
 		}
 	}
 	
+	/**
+	 * Vaihdetaan valikkoteksi kehoittamaan uuden pelin aloitusta.
+	 */
 	public void updateMenuText(){
 		this.menuText = "Pikku torkut tähän väliin. Herätä, jos haluut uusiks!";
 	}
+	
 	
 	public void drawCredits(Graphics g){
 		int lineHeight = this.creditsFont.getLineHeight();

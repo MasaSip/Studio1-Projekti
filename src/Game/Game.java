@@ -9,7 +9,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-
+/**
+* Pelin kuvat ovat Sonja Kiiverin piirtamia. Musiikkin ovat tehneet 
+* Nora Bergman ja Aapo Haapasalo.
+* 
+* Laatta taso ja Layer tarkoittavat samaa.
+* 
+*/
 public class Game extends StateBasedGame {
 	
 	public static final int GAMEPLAYSTATE = -1;
@@ -21,6 +27,7 @@ public class Game extends StateBasedGame {
 		super("Hämiksen Päiväunet");
 	}
 
+	
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		
@@ -36,20 +43,12 @@ public class Game extends StateBasedGame {
 		Game game = new Game();
 		AppGameContainer app = new AppGameContainer(game);
 
-		app.setDisplayMode(
-				/*
-				 * 
-					800,
-					600, 
-					true)
-				 */
-				(int)Game.WIDTH,
-				(int) Game.HEIGHT, 
-				false);
+		app.setDisplayMode((int)Game.WIDTH, (int) Game.HEIGHT, false);
 
 		app.setTargetFrameRate(50);
 		app.setShowFPS(false);
 		app.setVSync(true);
+		
 		//Musiikki soi jatkuvasti riippumatta alotetaanko peli alusta.
 		Music music = new Music("data/Cajon_Party.ogg");
 		music.loop(1.0f, 1f);
