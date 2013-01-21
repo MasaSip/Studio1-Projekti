@@ -160,7 +160,7 @@ public class GameEngine {
 		float amount = this.avatar.getSpeed()*delta;
 		MovingStatus oldStatus = this.avatar.getMovingStatus();
 		//jos ei liiku, taman verran otetaan movingStatusta pois
-		float decreaseAmount = 5*delta;
+		float decreaseAmount = 5f*delta;
 
 		this.physics.moveAvatar();
 
